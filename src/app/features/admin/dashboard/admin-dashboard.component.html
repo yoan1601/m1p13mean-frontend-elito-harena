@@ -1,0 +1,108 @@
+<div class="p-6">
+  <!-- Page Header -->
+  <div class="mb-6">
+    <h1 class="text-2xl font-semibold text-gray-800">Admin Dashboard</h1>
+    <p class="text-gray-500 mt-1">Welcome back! Here's what's happening in your mall.</p>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+    @for (card of statCards; track card.title) {
+      <mat-card class="mat-elevation-z2">
+        <mat-card-content class="p-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-500 text-sm">{{ card.title }}</p>
+              <h3 class="text-2xl font-bold mt-1">{{ card.value }}</h3>
+              <p class="text-sm mt-2" 
+                 [class.text-green-600]="card.changeType === 'increase'"
+                 [class.text-red-600]="card.changeType === 'decrease'">
+                {{ card.change }} from last month
+              </p>
+            </div>
+            <div class="p-3 rounded-full bg-gray-100">
+              <i-tabler [name]="card.icon" class="icon-24"></i-tabler>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Quick Actions -->
+    <mat-card class="mat-elevation-z2">
+      <mat-card-header>
+        <mat-card-title>Quick Actions</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="p-4">
+        <div class="grid grid-cols-2 gap-4">
+          <button mat-stroked-button color="primary" class="h-16">
+            <i-tabler name="solar:shop-add-line-duotone" class="mr-2"></i-tabler>
+            Manage Shops
+          </button>
+          <button mat-stroked-button color="primary" class="h-16">
+            <i-tabler name="solar:users-group-rounded-line-duotone" class="mr-2"></i-tabler>
+            Manage Users
+          </button>
+          <button mat-stroked-button color="primary" class="h-16">
+            <i-tabler name="solar:chart-square-line-duotone" class="mr-2"></i-tabler>
+            View Reports
+          </button>
+          <button mat-stroked-button color="primary" class="h-16">
+            <i-tabler name="solar:settings-line-duotone" class="mr-2"></i-tabler>
+            System Settings
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Recent Activity -->
+    <mat-card class="mat-elevation-z2">
+      <mat-card-header>
+        <mat-card-title>Recent Activity</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="p-4">
+        <mat-list>
+          @for (activity of recentActivities; track activity.id) {
+            <mat-list-item>
+              <i-tabler matListItemIcon [name]="activity.icon"></i-tabler>
+              <div matListItemTitle>{{ activity.action }}</div>
+              <div matListItemLine class="text-gray-500">
+                {{ activity.target }} • {{ activity.timestamp | date:'short' }}
+              </div>
+            </mat-list-item>
+            @if (!$last) {
+              <mat-divider></mat-divider>
+            }
+          }
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Placeholder for Charts -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+    <mat-card class="mat-elevation-z2">
+      <mat-card-header>
+        <mat-card-title>Revenue Overview</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="p-4">
+        <div class="h-64 flex items-center justify-center bg-gray-50 rounded">
+          <p class="text-gray-400">Chart placeholder - integrate with chart library</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="mat-elevation-z2">
+      <mat-card-header>
+        <mat-card-title>Shop Performance</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="p-4">
+        <div class="h-64 flex items-center justify-center bg-gray-50 rounded">
+          <p class="text-gray-400">Chart placeholder - integrate with chart library</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

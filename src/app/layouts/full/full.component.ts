@@ -1,11 +1,11 @@
 import { BreakpointObserver, MediaMatcher } from '@angular/cdk/layout';
-import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy, ViewChild, ViewEncapsulation, computed } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
 import { CoreService } from 'src/app/services/core.service';
 import { AppSettings } from 'src/app/config';
 import { filter } from 'rxjs/operators';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
 import { NavService } from '../../services/nav.service';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from 'src/app/material.module';
@@ -15,8 +15,15 @@ import { TablerIconsModule } from 'angular-tabler-icons';
 import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { AppNavItemComponent } from './sidebar/nav-item/nav-item.component';
-import { navItems } from './sidebar/sidebar-data';
-import { AppTopstripComponent } from './top-strip/topstrip.component';
+
+// Role-based navigation imports
+import { AuthService } from 'src/app/core/services/auth.service';
+import { UserRole } from 'src/app/core/models/user.model';
+import { NavItem } from './sidebar/nav-item/nav-item';
+import { adminNavItems } from 'src/app/features/admin/admin-nav';
+import { shopNavItems } from 'src/app/features/shop/shop-nav';
+import { userNavItems } from 'src/app/features/user/user-nav';
+import { navItems as demoNavItems } from './sidebar/sidebar-data';
 
 const MOBILE_VIEW = 'screen and (max-width: 768px)';
 const TABLET_VIEW = 'screen and (min-width: 769px) and (max-width: 1024px)';
@@ -34,17 +41,15 @@ const BELOWMONITOR = 'screen and (max-width: 1023px)';
     SidebarComponent,
     NgScrollbarModule,
     TablerIconsModule,
-    HeaderComponent,
-    AppTopstripComponent
+    HeaderComponent
   ],
   templateUrl: './full.component.html',
 
   encapsulation: ViewEncapsulation.None
 })
-export class FullComponent implements OnInit {
-  navItems = navItems;
-
-
+export class FullComponent implements OnInit, OnDestroy {
+  // Navigation items based on current role
+  navItems: NavItem[] = [];
 
   @ViewChild('leftsidenav')
   public sidenav: MatSidenav;
@@ -58,6 +63,10 @@ export class FullComponent implements OnInit {
   private isCollapsedWidthFixed = false;
   private htmlElement!: HTMLHtmlElement;
 
+  // Computed user info from auth service
+  currentUser = computed(() => this.authService.currentUser());
+  userRole = computed(() => this.authService.userRole());
+
   get isOver(): boolean {
     return this.isMobileScreen;
   }
@@ -70,8 +79,11 @@ export class FullComponent implements OnInit {
     private settings: CoreService,
     private mediaMatcher: MediaMatcher,
     private router: Router,
+    private route: ActivatedRoute,
     private breakpointObserver: BreakpointObserver,
-    private navService: NavService, private cdr: ChangeDetectorRef
+    private navService: NavService, 
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService
   ) {
     this.htmlElement = document.querySelector('html')!;
     this.layoutChangesSubscription = this.breakpointObserver
@@ -90,11 +102,12 @@ export class FullComponent implements OnInit {
     // Initialize project theme with options
     this.receiveOptions(this.options);
 
-    // This is for scroll to top
+    // This is for scroll to top and update navigation based on route
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((e) => {
         this.content.scrollTo({ top: 0 });
+        this.updateNavigationForCurrentRoute();
       });
   }
 
@@ -106,10 +119,55 @@ export class FullComponent implements OnInit {
     this.cdr.detectChanges(); // Ensures Angular updates the view
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.updateNavigationForCurrentRoute();
+  }
 
   ngOnDestroy() {
     this.layoutChangesSubscription.unsubscribe();
+  }
+
+  /**
+   * Update navigation items based on current route/role
+   */
+  private updateNavigationForCurrentRoute(): void {
+    const url = this.router.url;
+    
+    if (url.startsWith('/admin')) {
+      this.navItems = adminNavItems;
+    } else if (url.startsWith('/shop')) {
+      this.navItems = shopNavItems;
+    } else if (url.startsWith('/user')) {
+      this.navItems = userNavItems;
+    } else if (url.startsWith('/demo')) {
+      this.navItems = demoNavItems;
+    } else {
+      // Fallback based on user role
+      this.navItems = this.getNavItemsForRole(this.userRole());
+    }
+  }
+
+  /**
+   * Get navigation items based on user role
+   */
+  private getNavItemsForRole(role: UserRole | null): NavItem[] {
+    switch (role) {
+      case UserRole.ADMIN:
+        return adminNavItems;
+      case UserRole.SHOP:
+        return shopNavItems;
+      case UserRole.USER:
+        return userNavItems;
+      default:
+        return demoNavItems;
+    }
+  }
+
+  /**
+   * Logout and redirect to login
+   */
+  logout(): void {
+    this.authService.logout();
   }
 
   toggleCollapsed() {

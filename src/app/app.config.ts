@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 import {
   provideHttpClient,
-  withInterceptorsFromDi,
+  withInterceptors,
 } from '@angular/common/http';
 import { routes } from './app.routes';
 import {
@@ -25,9 +25,12 @@ import * as TablerIcons from 'angular-tabler-icons/icons';
 // perfect scrollbar
 import { NgScrollbarModule } from 'ngx-scrollbar';
 
-//Import all material modules
+// Import all material modules
 import { MaterialModule } from './material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+// Core interceptors
+import { jwtInterceptor, errorInterceptor } from './core/interceptors';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -40,7 +43,10 @@ export const appConfig: ApplicationConfig = {
       }),
       withComponentInputBinding()
     ),
-    provideHttpClient(withInterceptorsFromDi()),
+    // HTTP client with functional interceptors
+    provideHttpClient(
+      withInterceptors([jwtInterceptor, errorInterceptor])
+    ),
     provideClientHydration(),
     provideAnimationsAsync(),
     importProvidersFrom(

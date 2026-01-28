@@ -4,10 +4,14 @@
   width: $sidenav-desktop;
   flex-shrink: 0;
   transition: swift-ease-out(width);
-  position: absolute;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
   overflow-x: hidden;
   border-right: 1px solid $borderColor;
   border-radius: 0px !important;
+  z-index: 100;
 }
 
 .branding {
