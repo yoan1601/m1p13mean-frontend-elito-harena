@@ -2,7 +2,7 @@
 
 > **Projet Académique MEAN Stack - Master 1**  
 > Application web de gestion de centre commercial  
-> Developpé par ETU 1783 - RANDRIAMPENO Joss Elito & ETU 1793 - RABARIJAONA Harena Juan
+> Developpé par ETU 1773 - FANAHY MANAMPENO Joss Elito & ETU 1793 - RABARIJAONA Harena Juan
 
 
 ---
