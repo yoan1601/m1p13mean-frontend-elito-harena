@@ -1,0 +1,134 @@
+<div class="p-6">
+  <!-- Page Header -->
+  <div class="mb-6">
+    <h1 class="text-2xl font-semibold text-gray-800">Shop Dashboard</h1>
+    <p class="text-gray-500 mt-1">Manage your shop and track performance.</p>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+    @for (card of statCards; track card.title) {
+      <mat-card class="mat-elevation-z2">
+        <mat-card-content class="p-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-500 text-sm">{{ card.title }}</p>
+              <h3 class="text-2xl font-bold mt-1">{{ card.value }}</h3>
+              <p class="text-sm mt-2" 
+                 [class.text-green-600]="card.changeType === 'increase'"
+                 [class.text-red-600]="card.changeType === 'decrease'">
+                {{ card.change }} from yesterday
+              </p>
+            </div>
+            <div class="p-3 rounded-full bg-gray-100">
+              <i-tabler [name]="card.icon" class="icon-24"></i-tabler>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Quick Actions -->
+    <mat-card class="mat-elevation-z2">
+      <mat-card-header>
+        <mat-card-title>Quick Actions</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="p-4">
+        <div class="flex flex-col gap-3">
+          <button mat-stroked-button color="primary" class="justify-start">
+            <i-tabler name="solar:add-circle-line-duotone" class="mr-2"></i-tabler>
+            Add New Product
+          </button>
+          <button mat-stroked-button color="primary" class="justify-start">
+            <i-tabler name="solar:box-line-duotone" class="mr-2"></i-tabler>
+            Manage Inventory
+          </button>
+          <button mat-stroked-button color="primary" class="justify-start">
+            <i-tabler name="solar:tag-price-line-duotone" class="mr-2"></i-tabler>
+            Create Promotion
+          </button>
+          <button mat-stroked-button color="primary" class="justify-start">
+            <i-tabler name="solar:chart-line-duotone" class="mr-2"></i-tabler>
+            View Analytics
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Recent Orders -->
+    <mat-card class="mat-elevation-z2 lg:col-span-2">
+      <mat-card-header>
+        <mat-card-title>Recent Orders</mat-card-title>
+        <span class="flex-1"></span>
+        <button mat-button color="primary">View All</button>
+      </mat-card-header>
+      <mat-card-content class="p-0">
+        <table mat-table [dataSource]="recentOrders" class="w-full">
+          <!-- Order ID Column -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>Order ID</th>
+            <td mat-cell *matCellDef="let order">{{ order.id }}</td>
+          </ng-container>
+
+          <!-- Customer Column -->
+          <ng-container matColumnDef="customer">
+            <th mat-header-cell *matHeaderCellDef>Customer</th>
+            <td mat-cell *matCellDef="let order">{{ order.customer }}</td>
+          </ng-container>
+
+          <!-- Items Column -->
+          <ng-container matColumnDef="items">
+            <th mat-header-cell *matHeaderCellDef>Items</th>
+            <td mat-cell *matCellDef="let order">{{ order.items }}</td>
+          </ng-container>
+
+          <!-- Total Column -->
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef>Total</th>
+            <td mat-cell *matCellDef="let order">{{ order.total }}</td>
+          </ng-container>
+
+          <!-- Status Column -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let order">
+              <mat-chip [color]="getStatusColor(order.status)">
+                {{ order.status | titlecase }}
+              </mat-chip>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="['id', 'customer', 'items', 'total', 'status']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['id', 'customer', 'items', 'total', 'status'];"></tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Placeholder for Charts -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+    <mat-card class="mat-elevation-z2">
+      <mat-card-header>
+        <mat-card-title>Sales Trend</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="p-4">
+        <div class="h-64 flex items-center justify-center bg-gray-50 rounded">
+          <p class="text-gray-400">Chart placeholder - integrate with chart library</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="mat-elevation-z2">
+      <mat-card-header>
+        <mat-card-title>Top Selling Products</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="p-4">
+        <div class="h-64 flex items-center justify-center bg-gray-50 rounded">
+          <p class="text-gray-400">Chart placeholder - integrate with chart library</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
