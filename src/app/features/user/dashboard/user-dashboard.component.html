@@ -1,0 +1,118 @@
+<div class="p-6">
+  <!-- Welcome Header -->
+  <div class="mb-6">
+    <h1 class="text-2xl font-semibold text-gray-800">Welcome back!</h1>
+    <p class="text-gray-500 mt-1">Discover amazing deals and track your orders.</p>
+  </div>
+
+  <!-- Quick Stats -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+    @for (stat of quickStats; track stat.label) {
+      <mat-card class="mat-elevation-z2 cursor-pointer hover:shadow-lg transition-shadow">
+        <mat-card-content class="p-4">
+          <div class="flex items-center gap-4">
+            <div class="p-3 rounded-full bg-primary/10">
+              <i-tabler [name]="stat.icon" class="icon-24 text-primary"></i-tabler>
+            </div>
+            <div>
+              <p class="text-gray-500 text-sm">{{ stat.label }}</p>
+              <h3 class="text-2xl font-bold">{{ stat.value }}</h3>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
+
+  <!-- Search Bar -->
+  <mat-card class="mat-elevation-z2 mb-6">
+    <mat-card-content class="p-4">
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Search for shops or products</mat-label>
+        <input matInput placeholder="What are you looking for?">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Featured Shops -->
+    <mat-card class="mat-elevation-z2 lg:col-span-2">
+      <mat-card-header>
+        <mat-card-title>Featured Shops</mat-card-title>
+        <span class="flex-1"></span>
+        <button mat-button color="primary">View All Shops</button>
+      </mat-card-header>
+      <mat-card-content class="p-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          @for (shop of featuredShops; track shop.id) {
+            <div class="flex items-center gap-4 p-4 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+              <img [src]="shop.image" [alt]="shop.name" class="w-16 h-16 rounded-lg object-cover">
+              <div class="flex-1">
+                <h4 class="font-medium">{{ shop.name }}</h4>
+                <p class="text-gray-500 text-sm">{{ shop.category }}</p>
+                <div class="flex items-center mt-1">
+                  @for (star of getStarArray(shop.rating); track $index) {
+                    <i-tabler name="tabler:star-filled" class="text-yellow-500 w-4 h-4"></i-tabler>
+                  }
+                  <span class="text-sm text-gray-500 ml-1">{{ shop.rating }}</span>
+                </div>
+              </div>
+              <button mat-icon-button>
+                <i-tabler name="solar:arrow-right-line-duotone"></i-tabler>
+              </button>
+            </div>
+          }
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Recent Orders -->
+    <mat-card class="mat-elevation-z2">
+      <mat-card-header>
+        <mat-card-title>Recent Orders</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="p-4">
+        <mat-list>
+          @for (order of recentOrders; track order.id) {
+            <mat-list-item class="cursor-pointer">
+              <i-tabler matListItemIcon name="solar:bag-4-line-duotone"></i-tabler>
+              <div matListItemTitle>{{ order.id }}</div>
+              <div matListItemLine>
+                {{ order.shop }} • {{ order.items }} items
+              </div>
+              <div matListItemMeta>
+                <mat-chip size="small" [color]="getStatusColor(order.status)">
+                  {{ order.status | titlecase }}
+                </mat-chip>
+              </div>
+            </mat-list-item>
+            @if (!$last) {
+              <mat-divider></mat-divider>
+            }
+          }
+        </mat-list>
+        <button mat-stroked-button color="primary" class="w-full mt-4">
+          View All Orders
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Categories Section -->
+  <mat-card class="mat-elevation-z2 mt-6">
+    <mat-card-header>
+      <mat-card-title>Browse by Category</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="p-4">
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        @for (category of ['Fashion', 'Electronics', 'Home', 'Beauty', 'Sports', 'Food']; track category) {
+          <button mat-stroked-button class="h-20 flex flex-col items-center justify-center">
+            <i-tabler name="solar:box-line-duotone" class="mb-2"></i-tabler>
+            {{ category }}
+          </button>
+        }
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

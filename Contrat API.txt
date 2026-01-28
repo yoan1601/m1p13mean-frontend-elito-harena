@@ -1,0 +1,277 @@
+﻿Contrat d’API – Version révisée
+Application web de gestion d’un centre commercial
+ MEAN Stack – NodeJS / Express – MongoDB
+Durée : 5 semaines – Déploiement progressif
+Version : v1.4 (REST normalisé & pagination)
+________________
+
+
+1. Objectif du contrat d’API
+Ce contrat d’API définit l’ensemble des endpoints REST, des formats d’échange, des règles d’accès et des conventions techniques, en stricte cohérence avec la modélisation MongoDB.
+Il vise à :
+* garantir un développement parallèle backend / frontend,
+
+* assurer une intégration progressive,
+
+* fournir une API lisible, normalisée et défendable académiquement.
+
+________________
+
+
+2. Principes généraux
+   * Architecture REST normalisée
+
+   * Format d’échange : JSON
+
+   * Authentification : JWT
+
+   * Images : URLs publiques (service externe)
+
+   * Gestion des suppressions : soft delete
+
+   * Base URL :
+
+/api
+
+
+________________
+
+
+3. Rôles et autorisations
+Rôle
+	Code
+	Administrateur
+	ADMIN
+	Boutique (agent unique)
+	SHOP
+	Acheteur
+	USER
+	Les rôles sont inclus dans le JWT et contrôlés côté backend.
+________________
+
+
+4. Conventions REST importantes
+4.1 États métier (produits)
+Les changements d’état sont gérés via une route unique et explicite :
+PATCH /api/products/:id/status
+
+
+Avec un body :
+{
+  "isAvailable": "DRAFT | PUBLISHED | INACTIVE"
+}
+
+
+________________
+
+
+4.2 Soft delete (suppression logique)
+Aucune ressource n’est supprimée physiquement.
+Un soft delete consiste à :
+      * renseigner deletedAt
+
+      * désactiver la ressource (isActive = false si applicable)
+
+Les ressources supprimées logiquement :
+         * ne sont plus retournées par défaut
+
+         * restent présentes en base pour audit ou restauration
+
+________________
+
+
+5. Modèles de données exposés (alignés MongoDB)
+5.1 Product (extrait utile)
+{
+  "_id": "ObjectId",
+  "shopId": "ObjectId",
+  "name": "string",
+  "categories": ["string"],
+  "price": "number",
+  "imagePaths": ["string"],
+  "isAvailable": "DRAFT | PUBLISHED | INACTIVE",
+  "deletedAt": "date | null"
+}
+
+
+________________
+
+
+6. Pagination, tri et limitation (standard API)
+Conventions communes
+Les endpoints de liste acceptent les query params suivants :
+Paramètre
+	Description
+	Exemple
+	page
+	Numéro de page (défaut = 1)
+	?page=2
+	limit
+	Nombre d’éléments (défaut = 10)
+	?limit=20
+	sortBy
+	Champ de tri
+	?sortBy=price
+	order
+	asc ou desc
+	?order=desc
+	________________
+
+
+Format de réponse paginée (standardisé)
+{
+  "data": [ /* résultats */ ],
+  "pagination": {
+    "page": 1,
+    "limit": 10,
+    "totalItems": 48,
+    "totalPages": 5
+  }
+}
+
+
+📌 Très apprécié à l’oral : structure claire et réutilisable.
+________________
+
+
+7. Gestion des catégories
+GET /api/categories
+Accès : ADMIN, SHOP, USER
+            * Retourne uniquement les catégories isActive = true
+
+            * Pas de pagination (liste maîtrisée)
+
+________________
+
+
+8. Gestion des boutiques (ADMIN)
+GET /api/shops
+Accès : ADMIN, USER
+Pagination : ✅
+Tri : ✅
+Exemple
+GET /api/shops?page=1&limit=10&sortBy=name&order=asc
+
+
+📌 Les boutiques deletedAt != null sont exclues par défaut.
+________________
+
+
+9. Gestion des produits (SHOP)
+9.1 Créer un produit
+POST /api/products
+Accès : SHOP
+➡️ Création avec isAvailable = DRAFT
+________________
+
+
+9.2 Modifier un produit
+PUT /api/products/:id
+Accès : SHOP (propriétaire)
+➡️ Modification des champs métier
+________________
+
+
+9.3 Modifier l’état d’un produit (REST normalisé)
+PATCH /api/products/:id/status
+Accès : SHOP
+Body
+{
+  "isAvailable": "PUBLISHED"
+}
+
+
+📌 Valeurs autorisées :
+               * DRAFT
+
+               * PUBLISHED
+
+               * INACTIVE
+
+________________
+
+
+9.4 Supprimer un produit (soft delete)
+DELETE /api/products/:id
+Accès : SHOP
+➡️ Action :
+                  * deletedAt = now
+
+                  * Le produit n’est plus retourné par défaut
+
+________________
+
+
+10. Consultation des produits (Acheteurs / Admin)
+GET /api/products
+Accès : USER, ADMIN
+Pagination : ✅
+Tri : ✅
+Filtres : ✅
+Query params disponibles
+?categories=SPORT,OUTDOOR
+&page=1
+&limit=12
+&sortBy=price
+&order=asc
+
+
+Règles
+                     * isAvailable = PUBLISHED
+
+                     * deletedAt = null
+
+________________
+
+
+11. Produits de la boutique connectée
+GET /api/products/my
+Accès : SHOP
+Pagination : ✅
+➡️ Inclut tous les états (DRAFT, PUBLISHED, INACTIVE)
+➡️ Exclut deletedAt != null
+________________
+
+
+12. Codes de réponse standards
+Code
+	Signification
+	200
+	Succès
+	201
+	Créé
+	400
+	Requête invalide
+	401
+	Non authentifié
+	403
+	Accès interdit
+	404
+	Ressource introuvable
+	________________
+
+
+13. Sécurité
+                        * JWT obligatoire
+
+                        * Vérification du rôle
+
+                        * Vérification shopId
+
+                        * Validation stricte de isAvailable
+
+                        * Exclusion automatique des documents soft-deleted
+
+________________
+
+
+14. Versioning et évolution
+                           * Version actuelle : v1.4
+
+                           * Toute évolution doit :
+
+                              * respecter la normalisation REST,
+
+                              * rester alignée au modèle MongoDB,
+
+                              * être documentée et versionnée.
