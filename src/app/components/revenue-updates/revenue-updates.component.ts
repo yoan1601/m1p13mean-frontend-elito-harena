@@ -49,21 +49,21 @@ export class AppRevenueUpdatesComponent {
   public revenueChart!: Partial<revenueChart> | any;
 
   months: month[] = [
-    { value: 'mar', viewValue: 'Year 2026' },
-    { value: 'apr', viewValue: 'Year 2025' },
-    { value: 'june', viewValue: 'Year 2024' },
+    { value: 'mar', viewValue: 'Année 2026' },
+    { value: 'apr', viewValue: 'Année 2025' },
+    { value: 'june', viewValue: 'Année 2024' },
   ];
 
   constructor() {
     this.revenueChart = {
       series: [
         {
-          name: 'Eanings this month',
+          name: 'Revenus ce mois',
           data: [1500, 2700, 2200, 3000, 1500, 1000, 1400, 2400, 1900, 2300, 1400, 1100],
           color: 'var(--mat-sys-primary)',
         },
         {
-          name: 'Expense this month',
+          name: 'Dépenses ce mois',
           data: [-1800, -1100, -2500, -1500, -600, -1800, -1200, -2300, -1900, -2300, -1200, -2500],
           color: 'var(--mat-sys-secondary)',
         },
@@ -120,7 +120,7 @@ export class AppRevenueUpdatesComponent {
         }
       },
       xaxis: {
-        categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        categories: ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc"],
         axisBorder: {
           show: false,
         },

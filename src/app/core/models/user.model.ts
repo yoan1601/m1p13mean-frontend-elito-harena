@@ -9,16 +9,23 @@ export enum UserRole {
 }
 
 /**
- * User model interface
+ * User profile from backend
+ */
+export interface UserProfile {
+  name?: string;
+  phone?: string;
+}
+
+/**
+ * User model interface - aligned with backend user.model.js
  */
 export interface User {
   id: string;
   email: string;
-  firstName: string;
-  lastName: string;
   role: UserRole;
-  avatar?: string;
-  phone?: string;
+  profile?: UserProfile;
+  shopId?: string;
+  isActive?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -32,32 +39,46 @@ export interface LoginRequest {
 }
 
 /**
- * Register request payload
+ * Register request payload - aligned with backend
  */
 export interface RegisterRequest {
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
-  role: UserRole;
-  phone?: string;
+  role?: UserRole;
+  profile?: {
+    name?: string;
+    phone?: string;
+  };
 }
 
 /**
- * Authentication response from API
+ * Backend login response structure
  */
-export interface AuthResponse {
-  user: User;
-  accessToken: string;
-  refreshToken: string;
-  expiresIn: number;
+export interface LoginResponse {
+  user: {
+    id: string;
+    role: UserRole;
+  };
+  token: string;
 }
 
 /**
- * Token payload decoded from JWT
+ * Backend register response structure
+ */
+export interface RegisterResponse {
+  success: boolean;
+  message: string;
+  data: {
+    user: User;
+    token: string;
+  };
+}
+
+/**
+ * Token payload decoded from JWT - aligned with backend jwt.js
  */
 export interface TokenPayload {
-  sub: string;
+  id: string;
   email: string;
   role: UserRole;
   iat: number;

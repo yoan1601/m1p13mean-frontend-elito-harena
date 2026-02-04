@@ -13,15 +13,22 @@ import { UserRole } from '../models';
  * - USER: Acheteur
  */
 export function roleGuard(allowedRoles: UserRole[]): CanActivateFn {
-  return (route: ActivatedRouteSnapshot) => {
+  return (route: ActivatedRouteSnapshot, state) => {
     const authService = inject(AuthService);
     const router = inject(Router);
 
-    if (!authService.isAuthenticated()) {
-      router.navigate(['/authentication/login']);
+    // Check both authentication state and valid token
+    const isAuthenticated = authService.isAuthenticated();
+    const hasToken = !!authService.getToken();
+
+    if (!isAuthenticated || !hasToken) {
+      router.navigate(['/authentication/login'], {
+        queryParams: { returnUrl: state.url },
+      });
       return false;
     }
 
+    // Check if user has required role
     if (authService.hasAnyRole(allowedRoles)) {
       return true;
     }

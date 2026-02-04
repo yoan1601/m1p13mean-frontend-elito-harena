@@ -19,8 +19,8 @@ export class AppSideRegisterComponent {
 
   // Available roles for registration (USER and SHOP can self-register)
   roles = [
-    { value: UserRole.USER, label: 'Buyer (User)' },
-    { value: UserRole.SHOP, label: 'Shop Owner' },
+    { value: UserRole.USER, label: 'Acheteur (Utilisateur)' },
+    { value: UserRole.SHOP, label: 'Propriétaire de Boutique' },
   ];
 
   constructor(
@@ -29,8 +29,8 @@ export class AppSideRegisterComponent {
   ) {}
 
   form = new FormGroup({
-    firstName: new FormControl('', [Validators.required, Validators.minLength(2)]),
-    lastName: new FormControl('', [Validators.required, Validators.minLength(2)]),
+    name: new FormControl('', [Validators.required, Validators.minLength(2)]),
+    phone: new FormControl(''),
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),
     confirmPassword: new FormControl('', [Validators.required]),
@@ -49,21 +49,23 @@ export class AppSideRegisterComponent {
 
     // Check password match
     if (this.form.value.password !== this.form.value.confirmPassword) {
-      this.errorMessage = 'Passwords do not match';
+      this.errorMessage = 'Les mots de passe ne correspondent pas';
       return;
     }
 
     this.isLoading = true;
     this.errorMessage = '';
 
-    const { firstName, lastName, email, password, role } = this.form.value;
+    const { name, phone, email, password, role } = this.form.value;
 
     this.authService.register({
-      firstName: firstName!,
-      lastName: lastName!,
       email: email!,
       password: password!,
       role: role!,
+      profile: {
+        name: name!,
+        phone: phone || undefined,
+      },
     }).subscribe({
       next: () => {
         this.isLoading = false;
@@ -71,7 +73,7 @@ export class AppSideRegisterComponent {
       },
       error: (error) => {
         this.isLoading = false;
-        this.errorMessage = error.message || 'Registration failed. Please try again.';
+        this.errorMessage = error.message || 'L\'inscription a échoué. Veuillez réessayer.';
       },
     });
   }
