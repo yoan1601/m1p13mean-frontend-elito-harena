@@ -36,11 +36,6 @@
               }
             </mat-form-field>
 
-            <div class="flex items-center justify-between mb-3">
-              <mat-checkbox color="primary" formControlName="rememberMe">Se souvenir de cet appareil</mat-checkbox>
-              <a [routerLink]="['/']" class="text-primary font-semibold no-underline text-sm">Mot de passe oublié ?</a>
-            </div>
-
             <button 
               mat-flat-button 
               color="primary" 
@@ -49,20 +44,21 @@
               [disabled]="isLoading || form.invalid">
               @if (isLoading) {
                 <mat-spinner diameter="20" class="inline-block mr-2"></mat-spinner>
-                Connexion en cours...
               } @else {
                 Se connecter
               }
             </button>
 
-            <!-- Demo Login Hints -->
-            <div class="mt-4 p-3 bg-gray-50 rounded text-sm text-gray-600">
-              <p class="font-semibold mb-2">Comptes de démonstration (utilisez n'importe quel mot de passe) :</p>
-              <ul class="list-disc list-inside space-y-1">
-                <li><strong>Admin :</strong> admin&#64;mall.com</li>
-                <li><strong>Boutique :</strong> shop&#64;mall.com</li>
-                <li><strong>Client :</strong> customer&#64;mall.com</li>
-              </ul>
+            <!-- Authentication Info -->
+            <div class="mt-4 p-3 bg-blue-50 rounded text-sm text-gray-600">
+              <p class="font-semibold mb-2 text-blue-700">
+                <mat-icon class="align-middle text-sm mr-1">info</mat-icon>
+                Informations de connexion
+              </p>
+              <p class="text-gray-600 w-100">
+                Utilisez les identifiants fournis par l'administrateur du centre commercial. 
+                Si vous n'avez pas encore de compte, vous pouvez en créer un en cliquant sur "Créer un compte" ci-dessous.
+              </p>
             </div>
           </form>
 

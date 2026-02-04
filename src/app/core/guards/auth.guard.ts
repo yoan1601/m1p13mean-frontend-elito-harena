@@ -1,17 +1,27 @@
 import { inject } from '@angular/core';
-import { Router, CanActivateFn, ActivatedRouteSnapshot } from '@angular/router';
+import { Router, CanActivateFn } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 /**
  * Guard that prevents access to routes when user is not authenticated.
+ * Validates both authentication state and token presence.
  * Redirects to login page if user is not logged in.
  */
 export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (authService.isAuthenticated()) {
+  // Check both authentication state and valid token
+  const isAuthenticated = authService.isAuthenticated();
+  const hasToken = !!authService.getToken();
+
+  if (isAuthenticated && hasToken) {
     return true;
+  }
+
+  // Clear any stale state if inconsistent
+  if (!hasToken && isAuthenticated) {
+    authService.logout();
   }
 
   // Store the attempted URL for redirecting after login
@@ -27,9 +37,12 @@ export const authGuard: CanActivateFn = (route, state) => {
  */
 export const noAuthGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
-  const router = inject(Router);
 
-  if (!authService.isAuthenticated()) {
+  // Check both authentication state and valid token
+  const isAuthenticated = authService.isAuthenticated();
+  const hasToken = !!authService.getToken();
+
+  if (!isAuthenticated || !hasToken) {
     return true;
   }
 

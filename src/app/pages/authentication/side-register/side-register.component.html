@@ -14,26 +14,21 @@
           }
 
           <form class="mt-6" [formGroup]="form" (ngSubmit)="submit()">
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <mat-label class="mat-subtitle-2 text-sm font-semibold mb-3 block">Prénom</mat-label>
-                <mat-form-field appearance="outline" class="w-full" color="primary">
-                  <input matInput formControlName="firstName" placeholder="Jean" />
-                  @if (f['firstName'].touched && f['firstName'].errors?.['required']) {
-                    <mat-error>Le prénom est requis</mat-error>
-                  }
-                </mat-form-field>
-              </div>
-              <div>
-                <mat-label class="mat-subtitle-2 text-sm font-semibold mb-3 block">Nom</mat-label>
-                <mat-form-field appearance="outline" class="w-full" color="primary">
-                  <input matInput formControlName="lastName" placeholder="Dupont" />
-                  @if (f['lastName'].touched && f['lastName'].errors?.['required']) {
-                    <mat-error>Le nom est requis</mat-error>
-                  }
-                </mat-form-field>
-              </div>
-            </div>
+            <mat-label class="mat-subtitle-2 text-sm font-semibold mb-3 block">Nom complet</mat-label>
+            <mat-form-field appearance="outline" class="w-full" color="primary">
+              <input matInput formControlName="name" placeholder="Jean Dupont" />
+              @if (f['name'].touched && f['name'].errors?.['required']) {
+                <mat-error>Le nom est requis</mat-error>
+              }
+              @if (f['name'].touched && f['name'].errors?.['minlength']) {
+                <mat-error>Le nom doit contenir au moins 2 caractères</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-label class="mat-subtitle-2 text-sm font-semibold mb-3 block">Téléphone (optionnel)</mat-label>
+            <mat-form-field appearance="outline" class="w-full" color="primary">
+              <input matInput formControlName="phone" placeholder="+261 34 00 000 00" />
+            </mat-form-field>
 
             <mat-label class="mat-subtitle-2 text-sm font-semibold mb-3 block">Adresse e-mail</mat-label>
             <mat-form-field appearance="outline" class="w-full" color="primary">

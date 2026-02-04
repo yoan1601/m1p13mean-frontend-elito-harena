@@ -4,7 +4,7 @@
  */
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://api.yourshoppingmall.com/api',
+  apiBaseUrl: 'https://m1p13mean-backend-elito-harena-production.up.railway.app/api',
 
   /**
    * API endpoints configuration

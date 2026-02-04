@@ -1,27 +1,27 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of, delay, tap } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, tap, catchError, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
   User,
   UserRole,
   LoginRequest,
   RegisterRequest,
-  AuthResponse,
+  LoginResponse,
+  RegisterResponse,
   TokenPayload,
 } from '../models';
 
 /**
  * Authentication service handling login, logout, and token management.
- * Currently uses mocked data - ready for backend integration.
+ * Connected to backend API for real authentication.
  */
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private readonly TOKEN_KEY = environment.jwt.tokenKey;
-  private readonly REFRESH_TOKEN_KEY = environment.jwt.refreshTokenKey;
   private readonly USER_KEY = 'current_user';
 
   // Reactive state using signals
@@ -43,42 +43,44 @@ export class AuthService {
 
   /**
    * Authenticate user with credentials
-   * TODO: Replace mock with actual API call
    */
-  login(credentials: LoginRequest): Observable<AuthResponse> {
+  login(credentials: LoginRequest): Observable<LoginResponse> {
     this.isLoadingSignal.set(true);
 
-    // MOCK: Simulate API response - Replace with actual HTTP call
-    // return this.http.post<AuthResponse>(`${environment.apiBaseUrl}${environment.api.auth.login}`, credentials)
-    
-    const mockResponse = this.getMockAuthResponse(credentials.email);
-    
-    return of(mockResponse).pipe(
-      delay(800), // Simulate network delay
+    return this.http.post<LoginResponse>(
+      `${environment.apiBaseUrl}${environment.api.auth.login}`,
+      credentials
+    ).pipe(
       tap((response) => {
-        this.handleAuthResponse(response);
+        this.handleLoginResponse(response);
         this.isLoadingSignal.set(false);
+      }),
+      catchError((error: HttpErrorResponse) => {
+        this.isLoadingSignal.set(false);
+        return throwError(() => this.handleAuthError(error));
       })
     );
   }
 
   /**
    * Register new user
-   * TODO: Replace mock with actual API call
    */
-  register(data: RegisterRequest): Observable<AuthResponse> {
+  register(data: RegisterRequest): Observable<RegisterResponse> {
     this.isLoadingSignal.set(true);
 
-    // MOCK: Simulate API response - Replace with actual HTTP call
-    // return this.http.post<AuthResponse>(`${environment.apiBaseUrl}${environment.api.auth.register}`, data)
-    
-    const mockResponse = this.getMockAuthResponse(data.email, data.role, data.firstName, data.lastName);
-    
-    return of(mockResponse).pipe(
-      delay(800),
+    return this.http.post<RegisterResponse>(
+      `${environment.apiBaseUrl}${environment.api.auth.register}`,
+      data
+    ).pipe(
       tap((response) => {
-        this.handleAuthResponse(response);
+        if (response.success) {
+          this.handleRegisterResponse(response);
+        }
         this.isLoadingSignal.set(false);
+      }),
+      catchError((error: HttpErrorResponse) => {
+        this.isLoadingSignal.set(false);
+        return throwError(() => this.handleAuthError(error));
       })
     );
   }
@@ -88,7 +90,6 @@ export class AuthService {
    */
   logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
-    localStorage.removeItem(this.REFRESH_TOKEN_KEY);
     localStorage.removeItem(this.USER_KEY);
     this.currentUserSignal.set(null);
     this.router.navigate(['/authentication/login']);
@@ -99,13 +100,6 @@ export class AuthService {
    */
   getToken(): string | null {
     return localStorage.getItem(this.TOKEN_KEY);
-  }
-
-  /**
-   * Get stored refresh token
-   */
-  getRefreshToken(): string | null {
-    return localStorage.getItem(this.REFRESH_TOKEN_KEY);
   }
 
   /**
@@ -124,25 +118,19 @@ export class AuthService {
   }
 
   /**
-   * Refresh authentication token
-   * TODO: Replace mock with actual API call
+   * Fetch current user profile from backend
    */
-  refreshToken(): Observable<AuthResponse> {
-    const refreshToken = this.getRefreshToken();
-    
-    // MOCK: Return current auth state - Replace with actual HTTP call
-    // return this.http.post<AuthResponse>(`${environment.apiBaseUrl}${environment.api.auth.refresh}`, { refreshToken })
-    
-    const user = this.currentUserSignal();
-    if (!user || !refreshToken) {
-      this.logout();
-      throw new Error('No refresh token available');
-    }
-
-    const mockResponse = this.getMockAuthResponse(user.email, user.role, user.firstName, user.lastName);
-    return of(mockResponse).pipe(
-      delay(300),
-      tap((response) => this.handleAuthResponse(response))
+  fetchProfile(): Observable<{ success: boolean; data: User }> {
+    return this.http.get<{ success: boolean; data: User }>(
+      `${environment.apiBaseUrl}${environment.api.auth.profile}`
+    ).pipe(
+      tap((response) => {
+        if (response.success && response.data) {
+          const user = this.mapBackendUserToUser(response.data);
+          localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+          this.currentUserSignal.set(user);
+        }
+      })
     );
   }
 
@@ -172,11 +160,83 @@ export class AuthService {
 
   // Private methods
 
-  private handleAuthResponse(response: AuthResponse): void {
-    localStorage.setItem(this.TOKEN_KEY, response.accessToken);
-    localStorage.setItem(this.REFRESH_TOKEN_KEY, response.refreshToken);
-    localStorage.setItem(this.USER_KEY, JSON.stringify(response.user));
-    this.currentUserSignal.set(response.user);
+  /**
+   * Handle login response from backend
+   */
+  private handleLoginResponse(response: LoginResponse): void {
+    // Store token
+    localStorage.setItem(this.TOKEN_KEY, response.token);
+
+    // Decode JWT to get user info
+    const decoded = this.decodeToken(response.token);
+    
+    // Create user object from response and decoded token
+    const user: User = {
+      id: response.user.id,
+      email: decoded?.email || '',
+      role: response.user.role as UserRole,
+    };
+
+    localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+    this.currentUserSignal.set(user);
+  }
+
+  /**
+   * Handle register response from backend
+   */
+  private handleRegisterResponse(response: RegisterResponse): void {
+    localStorage.setItem(this.TOKEN_KEY, response.data.token);
+    
+    const user = this.mapBackendUserToUser(response.data.user);
+    localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+    this.currentUserSignal.set(user);
+  }
+
+  /**
+   * Map backend user object to frontend User interface
+   */
+  private mapBackendUserToUser(backendUser: any): User {
+    return {
+      id: backendUser._id || backendUser.id,
+      email: backendUser.email,
+      role: backendUser.role as UserRole,
+      profile: backendUser.profile,
+      shopId: backendUser.shopId,
+      isActive: backendUser.isActive,
+      createdAt: backendUser.createdAt ? new Date(backendUser.createdAt) : undefined,
+      updatedAt: backendUser.updatedAt ? new Date(backendUser.updatedAt) : undefined,
+    };
+  }
+
+  /**
+   * Decode JWT token to extract payload
+   */
+  private decodeToken(token: string): TokenPayload | null {
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .join('')
+      );
+      return JSON.parse(jsonPayload) as TokenPayload;
+    } catch {
+      return null;
+    }
+  }
+
+  /**
+   * Check if token is expired
+   */
+  private isTokenExpired(token: string): boolean {
+    const decoded = this.decodeToken(token);
+    if (!decoded || !decoded.exp) {
+      return true;
+    }
+    // exp is in seconds, Date.now() is in milliseconds
+    return decoded.exp * 1000 < Date.now();
   }
 
   private loadUserFromStorage(): User | null {
@@ -198,8 +258,12 @@ export class AuthService {
       return;
     }
 
-    // Basic token expiry check (for mock purposes)
-    // In production, decode JWT and check exp claim
+    // Check token expiry
+    if (this.isTokenExpired(token)) {
+      this.logout();
+      return;
+    }
+
     const user = this.loadUserFromStorage();
     if (!user) {
       this.logout();
@@ -207,41 +271,21 @@ export class AuthService {
   }
 
   /**
-   * MOCK: Generate fake auth response for development
-   * Remove this method when backend is ready
+   * Handle authentication errors
    */
-  private getMockAuthResponse(
-    email: string,
-    role?: UserRole,
-    firstName?: string,
-    lastName?: string
-  ): AuthResponse {
-    // Determine role based on email pattern for mock
-    let determinedRole = role;
-    if (!determinedRole) {
-      if (email.includes('admin')) {
-        determinedRole = UserRole.ADMIN;
-      } else if (email.includes('shop')) {
-        determinedRole = UserRole.SHOP;
-      } else {
-        determinedRole = UserRole.USER;
-      }
+  private handleAuthError(error: HttpErrorResponse): { status: number; message: string } {
+    let message = 'Une erreur est survenue';
+
+    if (error.error?.message) {
+      message = error.error.message;
+    } else if (error.status === 401) {
+      message = 'Email ou mot de passe incorrect';
+    } else if (error.status === 400) {
+      message = error.error?.message || 'Données invalides';
+    } else if (error.status === 0) {
+      message = 'Impossible de se connecter au serveur';
     }
 
-    const mockUser: User = {
-      id: 'mock-user-' + Math.random().toString(36).substr(2, 9),
-      email,
-      firstName: firstName || 'John',
-      lastName: lastName || 'Doe',
-      role: determinedRole,
-      createdAt: new Date(),
-    };
-
-    return {
-      user: mockUser,
-      accessToken: 'mock-jwt-token-' + Date.now(),
-      refreshToken: 'mock-refresh-token-' + Date.now(),
-      expiresIn: 3600,
-    };
+    return { status: error.status, message };
   }
 }
