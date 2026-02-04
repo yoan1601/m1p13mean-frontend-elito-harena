@@ -53,13 +53,13 @@
                 <p class="text-gray-500 text-sm">{{ shop.category }}</p>
                 <div class="flex items-center mt-1">
                   @for (star of getStarArray(shop.rating); track $index) {
-                    <i-tabler name="tabler:star-filled" class="text-yellow-500 w-4 h-4"></i-tabler>
+                    <i-tabler name="star-filled" class="text-yellow-500 w-4 h-4"></i-tabler>
                   }
                   <span class="text-sm text-gray-500 ml-1">{{ shop.rating }}</span>
                 </div>
               </div>
               <button mat-icon-button>
-                <i-tabler name="solar:arrow-right-line-duotone"></i-tabler>
+                <i-tabler name="arrow-right"></i-tabler>
               </button>
             </div>
           }
@@ -76,7 +76,7 @@
         <mat-list>
           @for (order of recentOrders; track order.id) {
             <mat-list-item class="cursor-pointer">
-              <i-tabler matListItemIcon name="solar:bag-4-line-duotone"></i-tabler>
+              <i-tabler matListItemIcon name="shopping-bag"></i-tabler>
               <div matListItemTitle>{{ order.id }}</div>
               <div matListItemLine>
                 {{ order.shop }} • {{ order.items }} articles
@@ -108,8 +108,8 @@
       <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
         @for (category of ['Mode', 'Électronique', 'Maison', 'Beauté', 'Sports', 'Alimentation']; track category) {
           <button mat-stroked-button class="h-20 flex flex-col items-center justify-center">
-            <i-tabler name="solar:box-line-duotone" class="mb-2"></i-tabler>
-            {{ category }}
+            <i-tabler name="box" class="mb-2 inline-block"></i-tabler>
+            <span class="inline-block">{{ category }}</span>
           </button>
         }
       </div>

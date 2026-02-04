@@ -38,17 +38,17 @@ export class UserDashboardComponent {
     {
       label: 'Commandes Actives',
       value: '3',
-      icon: 'solar:bag-4-line-duotone',
+      icon: 'shopping-bag',
     },
     {
       label: 'Boutiques Favorites',
       value: '5',
-      icon: 'solar:shop-line-duotone',
+      icon: 'building-store',
     },
     {
       label: 'Produits Consultés',
       value: '24',
-      icon: 'solar:eye-line-duotone',
+      icon: 'eye',
     },
   ];
 

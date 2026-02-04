@@ -37,7 +37,7 @@ export class AdminDashboardComponent {
       value: '24',
       change: '+12%',
       changeType: 'increase',
-      icon: 'solar:shop-line-duotone',
+      icon: 'building-store',
       color: 'primary',
     },
     {
@@ -45,7 +45,7 @@ export class AdminDashboardComponent {
       value: '1,234',
       change: '+8%',
       changeType: 'increase',
-      icon: 'solar:users-group-rounded-line-duotone',
+      icon: 'users',
       color: 'accent',
     },
     {
@@ -53,7 +53,7 @@ export class AdminDashboardComponent {
       value: '$45,678',
       change: '+15%',
       changeType: 'increase',
-      icon: 'solar:wallet-money-line-duotone',
+      icon: 'wallet',
       color: 'success',
     },
     {
@@ -61,7 +61,7 @@ export class AdminDashboardComponent {
       value: '7',
       change: '-3',
       changeType: 'decrease',
-      icon: 'solar:clock-circle-line-duotone',
+      icon: 'clock',
       color: 'warn',
     },
   ];
@@ -72,7 +72,7 @@ export class AdminDashboardComponent {
       action: 'Nouvelle boutique enregistrée',
       target: 'Fashion Hub',
       timestamp: new Date(Date.now() - 1000 * 60 * 30),
-      icon: 'solar:shop-add-line-duotone',
+      icon: 'building-store',
     },
     {
       id: 2,
