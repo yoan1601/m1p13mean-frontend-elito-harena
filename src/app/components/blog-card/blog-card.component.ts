@@ -24,7 +24,7 @@ export class AppBlogCardsComponent {
         {
             id: 1,
             imgSrc: '/assets/images/products/product-1.jpg',
-            title: 'Boat Headphone',
+            title: 'Casque Boat',
             price: '285',
             rprice: '375',
         },
@@ -38,14 +38,14 @@ export class AppBlogCardsComponent {
         {
             id: 3,
             imgSrc: '/assets/images/products/product-3.jpg',
-            title: 'Red Valvet Dress',
+            title: 'Robe Velours Rouge',
             price: '285',
             rprice: '375',
         },
         {
             id: 4,
             imgSrc: '/assets/images/products/product-4.jpg',
-            title: 'Cute Soft Teddybear',
+            title: 'Adorable Peluche',
             price: '285',
             rprice: '375',
         },

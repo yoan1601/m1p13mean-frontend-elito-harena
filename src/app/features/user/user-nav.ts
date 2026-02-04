@@ -6,41 +6,41 @@ import { NavItem } from '../../layouts/full/sidebar/nav-item/nav-item';
  */
 export const userNavItems: NavItem[] = [
   {
-    navCap: 'Home',
+    navCap: 'Accueil',
   },
   {
-    displayName: 'Dashboard',
+    displayName: 'Tableau de bord',
     iconName: 'solar:home-2-line-duotone',
     route: '/user/dashboard',
   },
   {
-    navCap: 'Shopping',
+    navCap: 'Achats',
   },
   {
-    displayName: 'Browse Shops',
+    displayName: 'Parcourir les Boutiques',
     iconName: 'solar:shop-line-duotone',
     route: '/user/shops',
   },
   {
-    displayName: 'Browse Products',
+    displayName: 'Parcourir les Produits',
     iconName: 'solar:bag-smile-line-duotone',
     route: '/user/products',
   },
   {
-    displayName: 'Categories',
+    displayName: 'Catégories',
     iconName: 'solar:widget-4-line-duotone',
     route: '/user/categories',
   },
   {
-    navCap: 'My Account',
+    navCap: 'Mon Compte',
   },
   {
-    displayName: 'My Orders',
+    displayName: 'Mes Commandes',
     iconName: 'solar:bag-4-line-duotone',
     route: '/user/orders',
   },
   {
-    displayName: 'My Profile',
+    displayName: 'Mon Profil',
     iconName: 'solar:user-circle-line-duotone',
     route: '/user/profile',
   },

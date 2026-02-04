@@ -49,7 +49,8 @@ export class HeaderComponent {
   get displayName(): string {
     const user = this.currentUser();
     if (user) {
-      return `${user.firstName} ${user.lastName}`;
+      // Use profile name if available, otherwise use email
+      return user.profile?.name || user.email.split('@')[0];
     }
     return 'User';
   }

@@ -3,8 +3,8 @@
     <div class="grid grid-cols-12 gap-6">
       <div class="lg:col-span-6 col-span-12 flex items-stretch">
         <div class="w-full p-10 flex flex-col justify-center aling-center">
-          <div class="text-center text-xl font-semibold">Shopping Mall Portal</div>
-          <p class="text-center text-gray-500 mt-2">Create your account</p>
+          <div class="text-center text-xl font-semibold">Portail Centre Commercial</div>
+          <p class="text-center text-gray-500 mt-2">Créez votre compte</p>
 
           <!-- Error Message -->
           @if (errorMessage) {
@@ -14,39 +14,34 @@
           }
 
           <form class="mt-6" [formGroup]="form" (ngSubmit)="submit()">
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <mat-label class="mat-subtitle-2 text-sm font-semibold mb-3 block">First Name</mat-label>
-                <mat-form-field appearance="outline" class="w-full" color="primary">
-                  <input matInput formControlName="firstName" placeholder="John" />
-                  @if (f['firstName'].touched && f['firstName'].errors?.['required']) {
-                    <mat-error>First name is required</mat-error>
-                  }
-                </mat-form-field>
-              </div>
-              <div>
-                <mat-label class="mat-subtitle-2 text-sm font-semibold mb-3 block">Last Name</mat-label>
-                <mat-form-field appearance="outline" class="w-full" color="primary">
-                  <input matInput formControlName="lastName" placeholder="Doe" />
-                  @if (f['lastName'].touched && f['lastName'].errors?.['required']) {
-                    <mat-error>Last name is required</mat-error>
-                  }
-                </mat-form-field>
-              </div>
-            </div>
-
-            <mat-label class="mat-subtitle-2 text-sm font-semibold mb-3 block">Email Address</mat-label>
+            <mat-label class="mat-subtitle-2 text-sm font-semibold mb-3 block">Nom complet</mat-label>
             <mat-form-field appearance="outline" class="w-full" color="primary">
-              <input matInput type="email" formControlName="email" placeholder="john@example.com" />
-              @if (f['email'].touched && f['email'].errors?.['required']) {
-                <mat-error>Email is required</mat-error>
+              <input matInput formControlName="name" placeholder="Jean Dupont" />
+              @if (f['name'].touched && f['name'].errors?.['required']) {
+                <mat-error>Le nom est requis</mat-error>
               }
-              @if (f['email'].touched && f['email'].errors?.['email']) {
-                <mat-error>Please enter a valid email</mat-error>
+              @if (f['name'].touched && f['name'].errors?.['minlength']) {
+                <mat-error>Le nom doit contenir au moins 2 caractères</mat-error>
               }
             </mat-form-field>
 
-            <mat-label class="mat-subtitle-2 text-sm font-semibold mb-3 block">Account Type</mat-label>
+            <mat-label class="mat-subtitle-2 text-sm font-semibold mb-3 block">Téléphone (optionnel)</mat-label>
+            <mat-form-field appearance="outline" class="w-full" color="primary">
+              <input matInput formControlName="phone" placeholder="+261 34 00 000 00" />
+            </mat-form-field>
+
+            <mat-label class="mat-subtitle-2 text-sm font-semibold mb-3 block">Adresse e-mail</mat-label>
+            <mat-form-field appearance="outline" class="w-full" color="primary">
+              <input matInput type="email" formControlName="email" placeholder="jean@exemple.com" />
+              @if (f['email'].touched && f['email'].errors?.['required']) {
+                <mat-error>L'e-mail est requis</mat-error>
+              }
+              @if (f['email'].touched && f['email'].errors?.['email']) {
+                <mat-error>Veuillez entrer un e-mail valide</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-label class="mat-subtitle-2 text-sm font-semibold mb-3 block">Type de compte</mat-label>
             <mat-form-field appearance="outline" class="w-full" color="primary">
               <mat-select formControlName="role">
                 @for (role of roles; track role.value) {
@@ -55,28 +50,28 @@
               </mat-select>
             </mat-form-field>
 
-            <mat-label class="mat-subtitle-2 text-sm font-semibold mb-3 block">Password</mat-label>
+            <mat-label class="mat-subtitle-2 text-sm font-semibold mb-3 block">Mot de passe</mat-label>
             <mat-form-field appearance="outline" class="w-full" color="primary">
-              <input matInput type="password" formControlName="password" placeholder="At least 6 characters" />
+              <input matInput type="password" formControlName="password" placeholder="Au moins 6 caractères" />
               @if (f['password'].touched && f['password'].errors?.['required']) {
-                <mat-error>Password is required</mat-error>
+                <mat-error>Le mot de passe est requis</mat-error>
               }
               @if (f['password'].touched && f['password'].errors?.['minlength']) {
-                <mat-error>Password must be at least 6 characters</mat-error>
+                <mat-error>Le mot de passe doit contenir au moins 6 caractères</mat-error>
               }
             </mat-form-field>
 
-            <mat-label class="mat-subtitle-2 text-sm font-semibold mb-3 block">Confirm Password</mat-label>
+            <mat-label class="mat-subtitle-2 text-sm font-semibold mb-3 block">Confirmer le mot de passe</mat-label>
             <mat-form-field appearance="outline" class="w-full" color="primary">
-              <input matInput type="password" formControlName="confirmPassword" placeholder="Repeat your password" />
+              <input matInput type="password" formControlName="confirmPassword" placeholder="Répétez votre mot de passe" />
               @if (f['confirmPassword'].touched && f['confirmPassword'].errors?.['required']) {
-                <mat-error>Please confirm your password</mat-error>
+                <mat-error>Veuillez confirmer votre mot de passe</mat-error>
               }
             </mat-form-field>
 
             <div class="mb-4">
               <mat-checkbox color="primary" formControlName="acceptTerms">
-                I agree to the <a href="#" class="text-primary">Terms of Service</a> and <a href="#" class="text-primary">Privacy Policy</a>
+                J'accepte les <a href="#" class="text-primary">Conditions d'utilisation</a> et la <a href="#" class="text-primary">Politique de confidentialité</a>
               </mat-checkbox>
             </div>
 
@@ -88,22 +83,22 @@
               [disabled]="isLoading || form.invalid">
               @if (isLoading) {
                 <mat-spinner diameter="20" class="inline-block mr-2"></mat-spinner>
-                Creating Account...
+                Création du compte...
               } @else {
-                Sign Up
+                S'inscrire
               }
             </button>
           </form>
 
-          <span class="block font-medium text-center mt-6">Already have an Account?
+          <span class="block font-medium text-center mt-6">Vous avez déjà un compte ?
             <a [routerLink]="['/authentication/login']" class="no-underline text-primary font-medium text-sm">
-              Sign In</a>
+              Se connecter</a>
           </span>
         </div>
       </div>
       <div class="lg:col-span-6 col-span-12 relative hidden lg:flex justify-center items-stretch bg-light p-5">
         <div class="flex items-center justify-center w-full">
-          <img src="/assets/images/backgrounds/login-bg.svg" alt="login" class="img-fluid object-cover" />
+          <img src="/assets/images/backgrounds/shopfa-icon.svg" style="height: 450px;" alt="inscription" class="img-fluid object-cover" />
         </div>
       </div>
     </div>

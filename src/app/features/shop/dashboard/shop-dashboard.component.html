@@ -1,8 +1,8 @@
 <div class="p-6">
   <!-- Page Header -->
   <div class="mb-6">
-    <h1 class="text-2xl font-semibold text-gray-800">Shop Dashboard</h1>
-    <p class="text-gray-500 mt-1">Manage your shop and track performance.</p>
+    <h1 class="text-2xl font-semibold text-gray-800">Tableau de bord Boutique</h1>
+    <p class="text-gray-500 mt-1">Gérez votre boutique et suivez vos performances.</p>
   </div>
 
   <!-- Stats Cards -->
@@ -17,7 +17,7 @@
               <p class="text-sm mt-2" 
                  [class.text-green-600]="card.changeType === 'increase'"
                  [class.text-red-600]="card.changeType === 'decrease'">
-                {{ card.change }} from yesterday
+                {{ card.change }} par rapport à hier
               </p>
             </div>
             <div class="p-3 rounded-full bg-gray-100">
@@ -33,25 +33,25 @@
     <!-- Quick Actions -->
     <mat-card class="mat-elevation-z2">
       <mat-card-header>
-        <mat-card-title>Quick Actions</mat-card-title>
+        <mat-card-title>Actions Rapides</mat-card-title>
       </mat-card-header>
       <mat-card-content class="p-4">
         <div class="flex flex-col gap-3">
-          <button mat-stroked-button color="primary" class="justify-start">
-            <i-tabler name="solar:add-circle-line-duotone" class="mr-2"></i-tabler>
-            Add New Product
+          <button mat-stroked-button color="primary" class="justify-start items-center">
+            <i-tabler name="circle-plus" class="mr-2 inline-block align-middle"></i-tabler>
+            <span class="inline-block align-middle">Ajouter un Produit</span>
           </button>
-          <button mat-stroked-button color="primary" class="justify-start">
-            <i-tabler name="solar:box-line-duotone" class="mr-2"></i-tabler>
-            Manage Inventory
+          <button mat-stroked-button color="primary" class="justify-start items-center">
+            <i-tabler name="box" class="mr-2 inline-block align-middle"></i-tabler>
+            <span class="inline-block align-middle">Gérer l'Inventaire</span>
           </button>
-          <button mat-stroked-button color="primary" class="justify-start">
-            <i-tabler name="solar:tag-price-line-duotone" class="mr-2"></i-tabler>
-            Create Promotion
+          <button mat-stroked-button color="primary" class="justify-start items-center">
+            <i-tabler name="tag" class="mr-2 inline-block align-middle"></i-tabler>
+            <span class="inline-block align-middle">Créer une Promotion</span>
           </button>
-          <button mat-stroked-button color="primary" class="justify-start">
-            <i-tabler name="solar:chart-line-duotone" class="mr-2"></i-tabler>
-            View Analytics
+          <button mat-stroked-button color="primary" class="justify-start items-center">
+            <i-tabler name="chart-line" class="mr-2 inline-block align-middle"></i-tabler>
+            <span class="inline-block align-middle">Voir les Statistiques</span>
           </button>
         </div>
       </mat-card-content>
@@ -60,27 +60,27 @@
     <!-- Recent Orders -->
     <mat-card class="mat-elevation-z2 lg:col-span-2">
       <mat-card-header>
-        <mat-card-title>Recent Orders</mat-card-title>
+        <mat-card-title>Commandes Récentes</mat-card-title>
         <span class="flex-1"></span>
-        <button mat-button color="primary">View All</button>
+        <button mat-button color="primary">Voir Tout</button>
       </mat-card-header>
       <mat-card-content class="p-0">
         <table mat-table [dataSource]="recentOrders" class="w-full">
           <!-- Order ID Column -->
           <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>Order ID</th>
+            <th mat-header-cell *matHeaderCellDef>N° Commande</th>
             <td mat-cell *matCellDef="let order">{{ order.id }}</td>
           </ng-container>
 
           <!-- Customer Column -->
           <ng-container matColumnDef="customer">
-            <th mat-header-cell *matHeaderCellDef>Customer</th>
+            <th mat-header-cell *matHeaderCellDef>Client</th>
             <td mat-cell *matCellDef="let order">{{ order.customer }}</td>
           </ng-container>
 
           <!-- Items Column -->
           <ng-container matColumnDef="items">
-            <th mat-header-cell *matHeaderCellDef>Items</th>
+            <th mat-header-cell *matHeaderCellDef>Articles</th>
             <td mat-cell *matCellDef="let order">{{ order.items }}</td>
           </ng-container>
 
@@ -92,7 +92,7 @@
 
           <!-- Status Column -->
           <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <th mat-header-cell *matHeaderCellDef>Statut</th>
             <td mat-cell *matCellDef="let order">
               <mat-chip [color]="getStatusColor(order.status)">
                 {{ order.status | titlecase }}
@@ -111,22 +111,22 @@
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
     <mat-card class="mat-elevation-z2">
       <mat-card-header>
-        <mat-card-title>Sales Trend</mat-card-title>
+        <mat-card-title>Tendance des Ventes</mat-card-title>
       </mat-card-header>
       <mat-card-content class="p-4">
         <div class="h-64 flex items-center justify-center bg-gray-50 rounded">
-          <p class="text-gray-400">Chart placeholder - integrate with chart library</p>
+          <p class="text-gray-400">Espace réservé pour graphique - intégrer une bibliothèque de graphiques</p>
         </div>
       </mat-card-content>
     </mat-card>
 
     <mat-card class="mat-elevation-z2">
       <mat-card-header>
-        <mat-card-title>Top Selling Products</mat-card-title>
+        <mat-card-title>Produits les Plus Vendus</mat-card-title>
       </mat-card-header>
       <mat-card-content class="p-4">
         <div class="h-64 flex items-center justify-center bg-gray-50 rounded">
-          <p class="text-gray-400">Chart placeholder - integrate with chart library</p>
+          <p class="text-gray-400">Espace réservé pour graphique - intégrer une bibliothèque de graphiques</p>
         </div>
       </mat-card-content>
     </mat-card>

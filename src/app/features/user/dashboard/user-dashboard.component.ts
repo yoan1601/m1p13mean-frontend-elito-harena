@@ -36,19 +36,19 @@ export class UserDashboardComponent {
 
   quickStats = [
     {
-      label: 'Active Orders',
+      label: 'Commandes Actives',
       value: '3',
-      icon: 'solar:bag-4-line-duotone',
+      icon: 'shopping-bag',
     },
     {
-      label: 'Favorite Shops',
+      label: 'Boutiques Favorites',
       value: '5',
-      icon: 'solar:shop-line-duotone',
+      icon: 'building-store',
     },
     {
-      label: 'Products Viewed',
+      label: 'Produits Consultés',
       value: '24',
-      icon: 'solar:eye-line-duotone',
+      icon: 'eye',
     },
   ];
 
@@ -56,28 +56,28 @@ export class UserDashboardComponent {
     {
       id: '1',
       name: 'Fashion Hub',
-      category: 'Clothing & Accessories',
+      category: 'Vêtements & Accessoires',
       image: '/assets/images/products/product-1.jpg',
       rating: 4.8,
     },
     {
       id: '2',
       name: 'Tech World',
-      category: 'Electronics',
+      category: 'Électronique',
       image: '/assets/images/products/product-2.jpg',
       rating: 4.6,
     },
     {
       id: '3',
       name: 'Home Essentials',
-      category: 'Home & Living',
+      category: 'Maison & Déco',
       image: '/assets/images/products/product-3.jpg',
       rating: 4.5,
     },
     {
       id: '4',
       name: 'Beauty Palace',
-      category: 'Beauty & Care',
+      category: 'Beauté & Soins',
       image: '/assets/images/products/product-4.jpg',
       rating: 4.7,
     },

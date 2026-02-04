@@ -5,36 +5,36 @@ import { NavItem } from '../../layouts/full/sidebar/nav-item/nav-item';
  */
 export const shopNavItems: NavItem[] = [
   {
-    navCap: 'Shop Panel',
+    navCap: 'Panneau Boutique',
   },
   {
-    displayName: 'Dashboard',
+    displayName: 'Tableau de bord',
     iconName: 'solar:widget-line-duotone',
     route: '/shop/dashboard',
   },
   {
-    navCap: 'Store Management',
+    navCap: 'Gestion du Magasin',
   },
   {
-    displayName: 'Products',
+    displayName: 'Produits',
     iconName: 'solar:box-line-duotone',
     route: '/shop/products',
   },
   {
-    displayName: 'Inventory',
+    displayName: 'Inventaire',
     iconName: 'solar:clipboard-list-line-duotone',
     route: '/shop/inventory',
   },
   {
-    displayName: 'Categories',
+    displayName: 'Catégories',
     iconName: 'solar:folder-open-line-duotone',
     route: '/shop/categories',
   },
   {
-    navCap: 'Sales',
+    navCap: 'Ventes',
   },
   {
-    displayName: 'Orders',
+    displayName: 'Commandes',
     iconName: 'solar:bag-4-line-duotone',
     route: '/shop/orders',
   },
@@ -44,10 +44,10 @@ export const shopNavItems: NavItem[] = [
     route: '/shop/promotions',
   },
   {
-    navCap: 'Analytics',
+    navCap: 'Analytiques',
   },
   {
-    displayName: 'Sales Report',
+    displayName: 'Rapport des Ventes',
     iconName: 'solar:chart-line-duotone',
     route: '/shop/reports',
   },
