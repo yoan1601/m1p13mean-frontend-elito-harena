@@ -1,8 +1,8 @@
 <div class="p-6">
   <!-- Page Header -->
   <div class="mb-6">
-    <h1 class="text-2xl font-semibold text-gray-800">Admin Dashboard</h1>
-    <p class="text-gray-500 mt-1">Welcome back! Here's what's happening in your mall.</p>
+    <h1 class="text-2xl font-semibold text-gray-800">Tableau de bord Administrateur</h1>
+    <p class="text-gray-500 mt-1">Bienvenue ! Voici ce qui se passe dans votre centre commercial.</p>
   </div>
 
   <!-- Stats Cards -->
@@ -17,7 +17,7 @@
               <p class="text-sm mt-2" 
                  [class.text-green-600]="card.changeType === 'increase'"
                  [class.text-red-600]="card.changeType === 'decrease'">
-                {{ card.change }} from last month
+                {{ card.change }} par rapport au mois dernier
               </p>
             </div>
             <div class="p-3 rounded-full bg-gray-100">
@@ -33,25 +33,25 @@
     <!-- Quick Actions -->
     <mat-card class="mat-elevation-z2">
       <mat-card-header>
-        <mat-card-title>Quick Actions</mat-card-title>
+        <mat-card-title>Actions Rapides</mat-card-title>
       </mat-card-header>
       <mat-card-content class="p-4">
         <div class="grid grid-cols-2 gap-4">
           <button mat-stroked-button color="primary" class="h-16">
             <i-tabler name="solar:shop-add-line-duotone" class="mr-2"></i-tabler>
-            Manage Shops
+            Gérer les Boutiques
           </button>
           <button mat-stroked-button color="primary" class="h-16">
             <i-tabler name="solar:users-group-rounded-line-duotone" class="mr-2"></i-tabler>
-            Manage Users
+            Gérer les Utilisateurs
           </button>
           <button mat-stroked-button color="primary" class="h-16">
             <i-tabler name="solar:chart-square-line-duotone" class="mr-2"></i-tabler>
-            View Reports
+            Voir les Rapports
           </button>
           <button mat-stroked-button color="primary" class="h-16">
             <i-tabler name="solar:settings-line-duotone" class="mr-2"></i-tabler>
-            System Settings
+            Paramètres Système
           </button>
         </div>
       </mat-card-content>
@@ -60,7 +60,7 @@
     <!-- Recent Activity -->
     <mat-card class="mat-elevation-z2">
       <mat-card-header>
-        <mat-card-title>Recent Activity</mat-card-title>
+        <mat-card-title>Activité Récente</mat-card-title>
       </mat-card-header>
       <mat-card-content class="p-4">
         <mat-list>
@@ -85,22 +85,22 @@
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
     <mat-card class="mat-elevation-z2">
       <mat-card-header>
-        <mat-card-title>Revenue Overview</mat-card-title>
+        <mat-card-title>Aperçu des Revenus</mat-card-title>
       </mat-card-header>
       <mat-card-content class="p-4">
         <div class="h-64 flex items-center justify-center bg-gray-50 rounded">
-          <p class="text-gray-400">Chart placeholder - integrate with chart library</p>
+          <p class="text-gray-400">Espace réservé pour graphique - intégrer une bibliothèque de graphiques</p>
         </div>
       </mat-card-content>
     </mat-card>
 
     <mat-card class="mat-elevation-z2">
       <mat-card-header>
-        <mat-card-title>Shop Performance</mat-card-title>
+        <mat-card-title>Performance des Boutiques</mat-card-title>
       </mat-card-header>
       <mat-card-content class="p-4">
         <div class="h-64 flex items-center justify-center bg-gray-50 rounded">
-          <p class="text-gray-400">Chart placeholder - integrate with chart library</p>
+          <p class="text-gray-400">Espace réservé pour graphique - intégrer une bibliothèque de graphiques</p>
         </div>
       </mat-card-content>
     </mat-card>

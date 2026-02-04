@@ -33,7 +33,7 @@ interface RecentActivity {
 export class AdminDashboardComponent {
   statCards: StatCard[] = [
     {
-      title: 'Total Shops',
+      title: 'Total Boutiques',
       value: '24',
       change: '+12%',
       changeType: 'increase',
@@ -41,7 +41,7 @@ export class AdminDashboardComponent {
       color: 'primary',
     },
     {
-      title: 'Total Customers',
+      title: 'Total Clients',
       value: '1,234',
       change: '+8%',
       changeType: 'increase',
@@ -49,7 +49,7 @@ export class AdminDashboardComponent {
       color: 'accent',
     },
     {
-      title: 'Monthly Revenue',
+      title: 'Revenus Mensuels',
       value: '$45,678',
       change: '+15%',
       changeType: 'increase',
@@ -57,7 +57,7 @@ export class AdminDashboardComponent {
       color: 'success',
     },
     {
-      title: 'Pending Approvals',
+      title: 'Approbations en Attente',
       value: '7',
       change: '-3',
       changeType: 'decrease',
@@ -69,29 +69,29 @@ export class AdminDashboardComponent {
   recentActivities: RecentActivity[] = [
     {
       id: 1,
-      action: 'New shop registered',
+      action: 'Nouvelle boutique enregistrée',
       target: 'Fashion Hub',
       timestamp: new Date(Date.now() - 1000 * 60 * 30),
       icon: 'solar:shop-add-line-duotone',
     },
     {
       id: 2,
-      action: 'Customer complaint resolved',
-      target: 'Order #12345',
+      action: 'Réclamation client résolue',
+      target: 'Commande #12345',
       timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2),
       icon: 'solar:check-circle-line-duotone',
     },
     {
       id: 3,
-      action: 'System maintenance scheduled',
-      target: 'Database backup',
+      action: 'Maintenance système planifiée',
+      target: 'Sauvegarde base de données',
       timestamp: new Date(Date.now() - 1000 * 60 * 60 * 5),
       icon: 'solar:settings-line-duotone',
     },
     {
       id: 4,
-      action: 'New promotional campaign',
-      target: 'Summer Sale 2026',
+      action: 'Nouvelle campagne promotionnelle',
+      target: 'Soldes d\'été 2026',
       timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24),
       icon: 'solar:tag-price-line-duotone',
     },

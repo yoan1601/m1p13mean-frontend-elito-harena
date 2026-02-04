@@ -19,8 +19,8 @@ export class AppSideRegisterComponent {
 
   // Available roles for registration (USER and SHOP can self-register)
   roles = [
-    { value: UserRole.USER, label: 'Buyer (User)' },
-    { value: UserRole.SHOP, label: 'Shop Owner' },
+    { value: UserRole.USER, label: 'Acheteur (Utilisateur)' },
+    { value: UserRole.SHOP, label: 'Propriétaire de Boutique' },
   ];
 
   constructor(
@@ -49,7 +49,7 @@ export class AppSideRegisterComponent {
 
     // Check password match
     if (this.form.value.password !== this.form.value.confirmPassword) {
-      this.errorMessage = 'Passwords do not match';
+      this.errorMessage = 'Les mots de passe ne correspondent pas';
       return;
     }
 
@@ -71,7 +71,7 @@ export class AppSideRegisterComponent {
       },
       error: (error) => {
         this.isLoading = false;
-        this.errorMessage = error.message || 'Registration failed. Please try again.';
+        this.errorMessage = error.message || 'L\'inscription a échoué. Veuillez réessayer.';
       },
     });
   }

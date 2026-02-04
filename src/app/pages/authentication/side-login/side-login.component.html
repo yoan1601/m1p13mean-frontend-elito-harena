@@ -3,8 +3,8 @@
     <div class="grid grid-cols-12 gap-6">
       <div class="lg:col-span-6 col-span-12 flex items-stretch">
         <div class="w-full p-10 flex flex-col justify-center aling-center">
-          <div class="text-center text-xl font-semibold">Shopping Mall Portal</div>
-          <p class="text-center text-gray-500 mt-2">Sign in to your account</p>
+          <div class="text-center text-xl font-semibold">Portail Centre Commercial</div>
+          <p class="text-center text-gray-500 mt-2">Connectez-vous à votre compte</p>
 
           <!-- Error Message -->
           @if (errorMessage) {
@@ -14,31 +14,31 @@
           }
 
           <form class="mt-8" [formGroup]="form" (ngSubmit)="submit()">
-            <mat-label class="mat-subtitle-2 text-sm font-semibold mb-3 block text-start">Email Address</mat-label>
+            <mat-label class="mat-subtitle-2 text-sm font-semibold mb-3 block text-start">Adresse e-mail</mat-label>
             <mat-form-field appearance="outline" class="w-full" color="primary">
-              <input matInput formControlName="email" type="email" placeholder="Enter your email" />
+              <input matInput formControlName="email" type="email" placeholder="Entrez votre e-mail" />
               @if (f['email'].touched && f['email'].errors?.['required']) {
-                <mat-error>Email is required</mat-error>
+                <mat-error>L'e-mail est requis</mat-error>
               }
               @if (f['email'].touched && f['email'].errors?.['email']) {
-                <mat-error>Please enter a valid email</mat-error>
+                <mat-error>Veuillez entrer un e-mail valide</mat-error>
               }
             </mat-form-field>
 
-            <mat-label class="mat-subtitle-2 text-sm font-semibold mb-3 block text-start">Password</mat-label>
+            <mat-label class="mat-subtitle-2 text-sm font-semibold mb-3 block text-start">Mot de passe</mat-label>
             <mat-form-field appearance="outline" class="w-full" color="primary">
-              <input matInput type="password" formControlName="password" placeholder="Enter your password" />
+              <input matInput type="password" formControlName="password" placeholder="Entrez votre mot de passe" />
               @if (f['password'].touched && f['password'].errors?.['required']) {
-                <mat-error>Password is required</mat-error>
+                <mat-error>Le mot de passe est requis</mat-error>
               }
               @if (f['password'].touched && f['password'].errors?.['minlength']) {
-                <mat-error>Password must be at least 6 characters</mat-error>
+                <mat-error>Le mot de passe doit contenir au moins 6 caractères</mat-error>
               }
             </mat-form-field>
 
             <div class="flex items-center justify-between mb-3">
-              <mat-checkbox color="primary" formControlName="rememberMe">Remember this Device</mat-checkbox>
-              <a [routerLink]="['/']" class="text-primary font-semibold no-underline text-sm">Forgot Password?</a>
+              <mat-checkbox color="primary" formControlName="rememberMe">Se souvenir de cet appareil</mat-checkbox>
+              <a [routerLink]="['/']" class="text-primary font-semibold no-underline text-sm">Mot de passe oublié ?</a>
             </div>
 
             <button 
@@ -49,32 +49,32 @@
               [disabled]="isLoading || form.invalid">
               @if (isLoading) {
                 <mat-spinner diameter="20" class="inline-block mr-2"></mat-spinner>
-                Signing In...
+                Connexion en cours...
               } @else {
-                Sign In
+                Se connecter
               }
             </button>
 
             <!-- Demo Login Hints -->
             <div class="mt-4 p-3 bg-gray-50 rounded text-sm text-gray-600">
-              <p class="font-semibold mb-2">Demo Accounts (use any password):</p>
+              <p class="font-semibold mb-2">Comptes de démonstration (utilisez n'importe quel mot de passe) :</p>
               <ul class="list-disc list-inside space-y-1">
-                <li><strong>Admin:</strong> admin&#64;mall.com</li>
-                <li><strong>Shop:</strong> shop&#64;mall.com</li>
-                <li><strong>Customer:</strong> customer&#64;mall.com</li>
+                <li><strong>Admin :</strong> admin&#64;mall.com</li>
+                <li><strong>Boutique :</strong> shop&#64;mall.com</li>
+                <li><strong>Client :</strong> customer&#64;mall.com</li>
               </ul>
             </div>
           </form>
 
-          <span class="block font-medium text-center mt-6">New to Shopping Mall?
+          <span class="block font-medium text-center mt-6">Nouveau sur le Centre Commercial ?
             <a [routerLink]="['/authentication/register']" class="no-underline text-primary font-medium text-sm">
-              Create an account</a>
+              Créer un compte</a>
           </span>
         </div>
       </div>
       <div class="lg:col-span-6 col-span-12 relative hidden lg:flex justify-center items-stretch bg-light p-5">
         <div class="flex items-center justify-center w-full">
-          <img src="/assets/images/backgrounds/login-bg.svg" alt="login" class="img-fluid object-cover" />
+          <img src="/assets/images/backgrounds/login-bg.svg" alt="connexion" class="img-fluid object-cover" />
         </div>
       </div>
     </div>

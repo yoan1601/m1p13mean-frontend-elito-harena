@@ -5,44 +5,44 @@ import { NavItem } from '../../layouts/full/sidebar/nav-item/nav-item';
  */
 export const adminNavItems: NavItem[] = [
   {
-    navCap: 'Admin Panel',
+    navCap: 'Panneau Administrateur',
   },
   {
-    displayName: 'Dashboard',
+    displayName: 'Tableau de bord',
     iconName: 'solar:widget-line-duotone',
     route: '/admin/dashboard',
   },
   {
-    navCap: 'Management',
+    navCap: 'Gestion',
   },
   {
-    displayName: 'Shops',
+    displayName: 'Boutiques',
     iconName: 'solar:shop-line-duotone',
     route: '/admin/shops',
   },
   {
-    displayName: 'Users',
+    displayName: 'Utilisateurs',
     iconName: 'solar:users-group-rounded-line-duotone',
     route: '/admin/users',
   },
   {
-    navCap: 'Analytics',
+    navCap: 'Analytiques',
   },
   {
-    displayName: 'Reports',
+    displayName: 'Rapports',
     iconName: 'solar:chart-square-line-duotone',
     route: '/admin/reports',
   },
   {
-    displayName: 'Statistics',
+    displayName: 'Statistiques',
     iconName: 'solar:graph-up-line-duotone',
     route: '/admin/statistics',
   },
   {
-    navCap: 'Settings',
+    navCap: 'Paramètres',
   },
   {
-    displayName: 'Mall Settings',
+    displayName: 'Paramètres du Centre',
     iconName: 'solar:settings-line-duotone',
     route: '/admin/settings',
   },

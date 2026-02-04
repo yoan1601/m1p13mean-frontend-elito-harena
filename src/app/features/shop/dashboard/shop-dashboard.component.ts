@@ -33,28 +33,28 @@ interface Order {
 export class ShopDashboardComponent {
   statCards: StatCard[] = [
     {
-      title: 'Today\'s Orders',
+      title: 'Commandes du Jour',
       value: '28',
       change: '+5',
       changeType: 'increase',
       icon: 'solar:bag-4-line-duotone',
     },
     {
-      title: 'Total Revenue',
+      title: 'Revenus Totaux',
       value: '$3,456',
       change: '+12%',
       changeType: 'increase',
       icon: 'solar:wallet-money-line-duotone',
     },
     {
-      title: 'Products',
+      title: 'Produits',
       value: '156',
       change: '+3',
       changeType: 'increase',
       icon: 'solar:box-line-duotone',
     },
     {
-      title: 'Low Stock Items',
+      title: 'Stock Faible',
       value: '8',
       change: '-2',
       changeType: 'decrease',
