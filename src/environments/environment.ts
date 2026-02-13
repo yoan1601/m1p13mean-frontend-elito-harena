@@ -21,19 +21,15 @@ export const environment = {
     },
 
     // Categories endpoint - Section 7
-    // GET /api/categories - Access: ADMIN, SHOP, USER
-    categories: '/categories',
+    // GET /api/category - Access: ADMIN, SHOP, USER
+    category: '/category',
 
     // Shops endpoint - Section 8
     // GET /api/shops - Access: ADMIN, USER (paginated)
     shops: '/shops',
 
     // Products endpoints - Sections 9-11
-    products: {
-      base: '/products',           // GET (USER, ADMIN), POST (SHOP)
-      my: '/products/my',          // GET /api/products/my - SHOP's own products
-      status: '/products',         // PATCH /products/:id/status - SHOP
-    },
+    product: '/product',
   },
 
   // JWT configuration

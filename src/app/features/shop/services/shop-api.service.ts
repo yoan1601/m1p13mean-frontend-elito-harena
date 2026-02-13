@@ -85,11 +85,11 @@ export class ShopApiService extends ApiService {
 
   /**
    * Get all categories
-   * Endpoint: GET /api/categories
+   * Endpoint: GET /api/category
    * Access: All authenticated roles
    */
   getCategories(): Observable<Category[]> {
-    return this.get<Category[]>(this.api.categories);
+    return this.get<Category[]>(this.api.category);
   }
 
   // =========================================================================
@@ -98,60 +98,59 @@ export class ShopApiService extends ApiService {
 
   /**
    * Get shop's own products with pagination
-   * Endpoint: GET /api/products/my
+   * Endpoint: GET /api/product
    * Access: SHOP only
    * Query params: page, limit, sortBy, order
    */
   getMyProducts(params?: SearchParams): Observable<PaginatedResponse<Product>> {
-    return this.getList<Product>(this.api.products.my, params);
+    return this.getList<Product>(this.api.product, params);
   }
 
   /**
    * Get a single product by ID
-   * Endpoint: GET /api/products/:id
+   * Endpoint: GET /api/product/:id
    */
   getProductById(id: string): Observable<Product> {
-    return this.get<Product>(`${this.api.products.base}/${id}`);
+    return this.get<Product>(`${this.api.product}/${id}`);
   }
 
   /**
    * Create a new product
-   * Endpoint: POST /api/products
+   * Endpoint: POST /api/product
    * Access: SHOP only
    * Note: shopId is automatically set from authenticated user
    */
   createProduct(product: ProductPayload): Observable<Product> {
-    return this.post<Product>(this.api.products.base, product);
+    return this.post<Product>(this.api.product, product);
   }
 
   /**
    * Update an existing product
-   * Endpoint: PUT /api/products/:id
+   * Endpoint: PUT /api/product/:id
    * Access: SHOP only (owner)
    */
   updateProduct(id: string, product: ProductPayload): Observable<Product> {
-    return this.put<Product>(`${this.api.products.base}/${id}`, product);
+    return this.put<Product>(`${this.api.product}/${id}`, product);
   }
 
   /**
    * Update product status (DRAFT, PUBLISHED, INACTIVE)
-   * Endpoint: PATCH /api/products/:id/status
+   * Endpoint: PUT /api/product/:id
    * Access: SHOP only (owner)
-   * Section 11 of API Contract
    */
   updateProductStatus(id: string, status: ProductStatus): Observable<Product> {
     const payload: ProductStatusPayload = { isAvailable: status };
-    return this.patch<Product>(`${this.api.products.status}`.replace(':id', id), payload);
+    return this.put<Product>(`${this.api.product}/${id}`, payload);
   }
 
   /**
    * Soft delete a product
-   * Endpoint: DELETE /api/products/:id
+   * Endpoint: DELETE /api/product/:id
    * Access: SHOP only (owner)
    * Note: Sets deletedAt timestamp, does not physically delete
    */
   deleteProduct(id: string): Observable<void> {
-    return this.delete<void>(`${this.api.products.base}/${id}`);
+    return this.delete<void>(`${this.api.product}/${id}`);
   }
 
   // =========================================================================
