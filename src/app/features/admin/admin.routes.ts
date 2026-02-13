@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 import { AdminDashboardComponent } from './dashboard/admin-dashboard.component';
+import { CategoryListComponent } from './categories/category-list.component';
+import { ShopListComponent } from './shops/shop-list.component';
 
 /**
  * Admin feature module routes.
@@ -22,18 +24,25 @@ export const AdminRoutes: Routes = [
       ],
     },
   },
-  // Placeholder routes for future features
+  {
+    path: 'categories',
+    component: CategoryListComponent,
+    data: {
+      title: 'Manage Categories',
+      breadcrumb: [
+        { title: 'Admin', url: '/admin' },
+        { title: 'Catégories' },
+      ],
+    },
+  },
   {
     path: 'shops',
-    loadComponent: () =>
-      import('./dashboard/admin-dashboard.component').then(
-        (m) => m.AdminDashboardComponent
-      ),
+    component: ShopListComponent,
     data: {
       title: 'Manage Shops',
       breadcrumb: [
         { title: 'Admin', url: '/admin' },
-        { title: 'Shops' },
+        { title: 'Boutiques' },
       ],
     },
   },

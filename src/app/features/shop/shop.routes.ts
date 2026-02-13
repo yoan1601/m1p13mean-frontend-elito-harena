@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { ShopDashboardComponent } from './dashboard/shop-dashboard.component';
+import { ProductListComponent } from './products/product-list.component';
 
 /**
  * Shop feature module routes.
@@ -22,18 +23,14 @@ export const ShopRoutes: Routes = [
       ],
     },
   },
-  // Placeholder routes for future features
   {
     path: 'products',
-    loadComponent: () =>
-      import('./dashboard/shop-dashboard.component').then(
-        (m) => m.ShopDashboardComponent
-      ),
+    component: ProductListComponent,
     data: {
       title: 'Products',
       breadcrumb: [
         { title: 'Shop', url: '/shop' },
-        { title: 'Products' },
+        { title: 'Produits' },
       ],
     },
   },

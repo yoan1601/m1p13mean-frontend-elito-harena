@@ -91,7 +91,7 @@ export class UserApiService extends ApiService {
    * Access: All authenticated roles
    */
   getCategories(): Observable<Category[]> {
-    return this.get<Category[]>(this.api.categories);
+    return this.get<Category[]>(this.api.category);
   }
 
   // =========================================================================
@@ -117,26 +117,26 @@ export class UserApiService extends ApiService {
   }
 
   // =========================================================================
-  // Products - GET /api/products (Section 10)
+  // Products - GET /api/product (Section 10)
   // =========================================================================
 
   /**
    * Get products with pagination and filtering
-   * Endpoint: GET /api/products
+   * Endpoint: GET /api/product
    * Access: ADMIN, USER
    * Query params: page, limit, sortBy, order, categoryId, shopId, minPrice, maxPrice, isAvailable
    * Note: Returns only PUBLISHED products for USER role (filtered by backend)
    */
   getProducts(params?: ProductSearchParams): Observable<PaginatedResponse<Product>> {
-    return this.getList<Product>(this.api.products.base, params);
+    return this.getList<Product>(this.api.product, params);
   }
 
   /**
    * Get a single product by ID
-   * Endpoint: GET /api/products/:id
+   * Endpoint: GET /api/product/:id
    */
   getProductById(id: string): Observable<Product> {
-    return this.get<Product>(`${this.api.products.base}/${id}`);
+    return this.get<Product>(`${this.api.product}/${id}`);
   }
 
   /**

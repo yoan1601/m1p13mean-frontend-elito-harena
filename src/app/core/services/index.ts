@@ -1,2 +1,5 @@
 export * from './auth.service';
 export * from './api.service';
+export * from './category.service';
+export * from './shop.service';
+export * from './product.service';
