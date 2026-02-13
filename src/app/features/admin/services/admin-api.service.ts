@@ -86,11 +86,11 @@ export class AdminApiService extends ApiService {
 
   /**
    * Get all categories
-   * Endpoint: GET /api/categories
+   * Endpoint: GET /api/category
    * Access: All authenticated roles
    */
   getCategories(): Observable<Category[]> {
-    return this.get<Category[]>(this.api.categories);
+    return this.get<Category[]>(this.api.category);
   }
 
   // =========================================================================
@@ -121,21 +121,21 @@ export class AdminApiService extends ApiService {
 
   /**
    * Get all products with pagination and filtering
-   * Endpoint: GET /api/products
+   * Endpoint: GET /api/product
    * Access: ADMIN, USER
    * Query params: page, limit, sortBy, order, categoryId, shopId, minPrice, maxPrice, isAvailable
    * Note: ADMIN can see all products regardless of status
    */
   getProducts(params?: ProductSearchParams): Observable<PaginatedResponse<Product>> {
-    return this.getList<Product>(this.api.products.base, params);
+    return this.getList<Product>(this.api.product, params);
   }
 
   /**
    * Get a single product by ID
-   * Endpoint: GET /api/products/:id
+   * Endpoint: GET /api/product/:id
    */
   getProductById(id: string): Observable<Product> {
-    return this.get<Product>(`${this.api.products.base}/${id}`);
+    return this.get<Product>(`${this.api.product}/${id}`);
   }
 
   /**

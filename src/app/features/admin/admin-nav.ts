@@ -16,6 +16,11 @@ export const adminNavItems: NavItem[] = [
     navCap: 'Gestion',
   },
   {
+    displayName: 'Catégories',
+    iconName: 'solar:folder-open-line-duotone',
+    route: '/admin/categories',
+  },
+  {
     displayName: 'Boutiques',
     iconName: 'solar:shop-line-duotone',
     route: '/admin/shops',
