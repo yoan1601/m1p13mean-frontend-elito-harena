@@ -42,8 +42,8 @@ export const UserRoutes: Routes = [
   {
     path: 'products',
     loadComponent: () =>
-      import('./dashboard/user-dashboard.component').then(
-        (m) => m.UserDashboardComponent
+      import('./products/product-browse.component').then(
+        (m) => m.ProductBrowseComponent
       ),
     data: {
       title: 'Browse Products',
@@ -68,17 +68,33 @@ export const UserRoutes: Routes = [
       ],
     },
   },
+  // Cart - GET /api/carts
+  {
+    path: 'cart',
+    loadComponent: () =>
+      import('./cart/cart.component').then(
+        (m) => m.CartComponent
+      ),
+    data: {
+      title: 'Mon Panier',
+      breadcrumb: [
+        { title: 'Home', url: '/user' },
+        { title: 'Panier' },
+      ],
+    },
+  },
+  // Orders - GET /api/orders
   {
     path: 'orders',
     loadComponent: () =>
-      import('./dashboard/user-dashboard.component').then(
-        (m) => m.UserDashboardComponent
+      import('./orders/user-orders.component').then(
+        (m) => m.UserOrdersComponent
       ),
     data: {
-      title: 'My Orders',
+      title: 'Mes Commandes',
       breadcrumb: [
         { title: 'Home', url: '/user' },
-        { title: 'Orders' },
+        { title: 'Commandes' },
       ],
     },
   },
@@ -97,4 +113,3 @@ export const UserRoutes: Routes = [
     },
   },
 ];
-
