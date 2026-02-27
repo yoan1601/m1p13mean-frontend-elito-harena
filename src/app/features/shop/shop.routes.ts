@@ -34,17 +34,18 @@ export const ShopRoutes: Routes = [
       ],
     },
   },
+  // Orders management - GET /api/orders
   {
     path: 'orders',
     loadComponent: () =>
-      import('./dashboard/shop-dashboard.component').then(
-        (m) => m.ShopDashboardComponent
+      import('./orders/shop-orders.component').then(
+        (m) => m.ShopOrdersComponent
       ),
     data: {
-      title: 'Orders',
+      title: 'Commandes',
       breadcrumb: [
         { title: 'Shop', url: '/shop' },
-        { title: 'Orders' },
+        { title: 'Commandes' },
       ],
     },
   },

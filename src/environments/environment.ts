@@ -4,7 +4,7 @@
  */
 export const environment = {
   production: false,
-  apiBaseUrl: 'https://m1p13mean-backend-elito-harena-production.up.railway.app/api',
+  apiBaseUrl: 'https://m1p13mean-backend-elito-harena-production.up.railway.app/api/v2',
 
   /**
    * API endpoints configuration
@@ -30,6 +30,14 @@ export const environment = {
 
     // Products endpoints - Sections 9-11
     product: '/product',
+
+    // Cart endpoints - Part II
+    // GET /api/v2/cart - Access: USER
+    cart: '/cart',
+
+    // Orders endpoints - Part II
+    // GET /api/orders - Access: USER, SHOP
+    orders: '/orders',
   },
 
   // JWT configuration

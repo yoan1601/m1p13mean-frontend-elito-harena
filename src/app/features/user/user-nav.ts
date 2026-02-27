@@ -32,6 +32,11 @@ export const userNavItems: NavItem[] = [
     route: '/user/categories',
   },
   {
+    displayName: 'Mon Panier',
+    iconName: 'solar:cart-large-2-line-duotone',
+    route: '/user/cart',
+  },
+  {
     navCap: 'Mon Compte',
   },
   {
@@ -45,4 +50,3 @@ export const userNavItems: NavItem[] = [
     route: '/user/profile',
   },
 ];
-
