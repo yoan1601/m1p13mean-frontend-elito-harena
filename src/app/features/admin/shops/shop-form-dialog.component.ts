@@ -12,8 +12,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 
-import { Shop, ShopCreatePayload, ShopUpdatePayload, Category } from 'src/app/core/models';
-import { ShopService, CategoryService } from 'src/app/core/services';
+import { Shop, ShopCreatePayload, ShopUpdatePayload, Category, ShopUser } from 'src/app/core/models';
+import { ShopService, CategoryService, UserService } from 'src/app/core/services';
 
 export interface ShopFormDialogData {
   mode: 'create' | 'edit';
@@ -81,12 +81,28 @@ export interface ShopFormDialogData {
         </div>
 
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>ID Propriétaire</mat-label>
-          <input matInput formControlName="ownerId" placeholder="ID du propriétaire">
+          <mat-label>Propriétaire</mat-label>
+          <mat-select formControlName="ownerId" placeholder="Sélectionner un propriétaire">
+            @for (owner of availableOwners; track owner._id) {
+              <mat-option [value]="owner._id">
+                {{ owner.firstName || '' }} {{ owner.lastName || '' }} ({{ owner.email }})
+              </mat-option>
+            }
+          </mat-select>
           @if (form.get('ownerId')?.hasError('required')) {
             <mat-error>Le propriétaire est obligatoire</mat-error>
           }
+          @if (loadingOwners) {
+            <mat-hint>Chargement des propriétaires...</mat-hint>
+          }
         </mat-form-field>
+                
+        @if (!loadingOwners && availableOwners.length === 0) {
+          <div class="no-owners-warning">
+            <mat-icon>warning</mat-icon>
+            <span>Aucun propriétaire disponible. Veuillez vous déconnecter puis créer un nouvel utilisateur de type "Propriétaire de Boutique" via la page d'inscription, ou ouvrir <a href="/authentication/register" target="_blank">ce lien</a> dans une fenêtre de navigation privée.</span>
+          </div>
+        }
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Catégories</mat-label>
@@ -191,6 +207,28 @@ export interface ShopFormDialogData {
       border-radius: 8px;
     }
 
+    .no-owners-warning {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 12px;
+      background-color: #fff3e0;
+      border: 1px solid #ffb74d;
+      border-radius: 8px;
+      color: #e65100;
+    }
+
+    .no-owners-warning mat-icon {
+      color: #ff9800;
+      flex-shrink: 0;
+    }
+
+    .no-owners-warning a {
+      color: #1976d2;
+      text-decoration: underline;
+      font-weight: 500;
+    }
+
     mat-dialog-actions button {
       min-width: 100px;
     }
@@ -204,6 +242,8 @@ export class ShopFormDialogComponent implements OnInit {
   form: FormGroup;
   saving = false;
   categories: Category[] = [];
+  availableOwners: ShopUser[] = [];
+  loadingOwners = false;
   selectedFile: File | null = null;
   imagePreview: string | null = null;
 
@@ -211,6 +251,7 @@ export class ShopFormDialogComponent implements OnInit {
     private fb: FormBuilder,
     private shopService: ShopService,
     private categoryService: CategoryService,
+    private userService: UserService,
     private snackBar: MatSnackBar,
     private dialogRef: MatDialogRef<ShopFormDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ShopFormDialogData
@@ -228,6 +269,7 @@ export class ShopFormDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCategories();
+    this.loadAvailableOwners();
     
     if (this.data.mode === 'edit' && this.data.shop) {
       this.form.patchValue({
@@ -244,6 +286,25 @@ export class ShopFormDialogComponent implements OnInit {
         this.imagePreview = this.data.shop.imagePath;
       }
     }
+  }
+
+  loadAvailableOwners(): void {
+    this.loadingOwners = true;
+    this.userService.getShopUsers().subscribe({
+      next: (users) => {
+        // Filter to only show users without a shop assigned
+        // In edit mode, also include the current owner
+        const currentOwnerId = this.data.mode === 'edit' ? this.data.shop?.ownerId : null;
+        this.availableOwners = users.filter(
+          user => user.totalShops === 0 || user._id === currentOwnerId
+        );
+        this.loadingOwners = false;
+      },
+      error: (error) => {
+        console.error('Error loading available owners:', error);
+        this.loadingOwners = false;
+      }
+    });
   }
 
   loadCategories(): void {

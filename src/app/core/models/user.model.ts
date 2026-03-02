@@ -84,3 +84,43 @@ export interface TokenPayload {
   iat: number;
   exp: number;
 }
+
+/**
+ * Shop user with enriched shop information
+ * Response from GET /api/users/shops
+ */
+export interface ShopUser {
+  _id: string;
+  email: string;
+  firstName?: string;
+  lastName?: string;
+  phone?: string;
+  role: UserRole;
+  status?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  shops: Array<{
+    _id: string;
+    name: string;
+    location?: {
+      floor: number;
+      zone: string;
+    };
+    status?: string;
+  }>;
+  totalShops: number;
+  totalProducts: number;
+  mainShop?: {
+    _id: string;
+    name: string;
+  } | null;
+}
+
+/**
+ * Response wrapper for shop users list
+ */
+export interface ShopUsersResponse {
+  success: boolean;
+  data: ShopUser[];
+  count: number;
+}

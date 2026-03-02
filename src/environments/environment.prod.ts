@@ -38,6 +38,10 @@ export const environment = {
     // Orders endpoints - Part II
     // GET /api/orders - Access: USER, SHOP
     orders: '/orders',
+
+    // Users endpoints
+    // GET /api/users/shops - Access: ADMIN
+    users: '/users',
   },
 
   // JWT configuration
