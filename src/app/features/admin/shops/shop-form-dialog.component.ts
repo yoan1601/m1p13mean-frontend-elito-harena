@@ -227,49 +227,6 @@ export interface ShopFormDialogData {
       color: #1976d2;
       text-decoration: underline;
       font-weight: 500;
-.upload-area:hover {
-      border-color: #1976d2;
-    }
-
-    .upload-area mat-icon {
-      font-size: 48px;
-      width: 48px;
-      height: 48px;
-      color: #9e9e9e;
-    }
-
-    .upload-area span {
-      display: block;
-      margin-top: 8px;
-      color: #9e9e9e;
-    }
-
-    .preview-image {
-      max-width: 200px;
-      max-height: 200px;
-      border-radius: 8px;
-    }
-
-    .no-owners-warning {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      padding: 12px;
-      background-color: #fff3e0;
-      border: 1px solid #ffb74d;
-      border-radius: 8px;
-      color: #e65100;
-    }
-
-    .no-owners-warning mat-icon {
-      color: #ff9800;
-      flex-shrink: 0;
-    }
-
-    .no-owners-warning a {
-      color: #1976d2;
-      text-decoration: underline;
-      font-weight: 500;
     }
 
     mat-dialog-actions button {
