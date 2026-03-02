@@ -93,7 +93,9 @@
           }
         </mat-list>
         <button mat-stroked-button color="primary" class="w-full mt-4">
-          Voir Toutes les Commandes
+          <span class="flex items-center justify-center">
+            Voir Toutes les Commandes
+          </span>
         </button>
       </mat-card-content>
     </mat-card>
@@ -107,9 +109,11 @@
     <mat-card-content class="p-4">
       <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
         @for (category of ['Mode', 'Électronique', 'Maison', 'Beauté', 'Sports', 'Alimentation']; track category) {
-          <button mat-stroked-button class="h-20 flex flex-col items-center justify-center">
-            <i-tabler name="box" class="mb-2 inline-block"></i-tabler>
-            <span class="inline-block">{{ category }}</span>
+          <button mat-stroked-button class="h-20">
+            <span class="flex items-center justify-center gap-2">
+              <i-tabler name="box"></i-tabler>
+              <span>{{ category }}</span>
+            </span>
           </button>
         }
       </div>
