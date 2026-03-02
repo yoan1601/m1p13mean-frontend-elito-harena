@@ -96,7 +96,7 @@ import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog
                       <!-- Product Info -->
                       <div class="flex-1 min-w-0">
                         <h4 class="font-medium text-gray-800 truncate">{{ item.name }}</h4>
-                        <p class="text-primary font-semibold">{{ item.price | number }} MGA</p>
+                        <p class="text-primary font-semibold">{{ item.price | number }} {{ item.currency }}</p>
                       </div>
 
                       <!-- Quantity Controls -->
@@ -118,7 +118,7 @@ import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog
 
                       <!-- Subtotal -->
                       <div class="text-right w-28">
-                        <p class="font-semibold text-gray-800">{{ item.subtotal | number }} MGA</p>
+                        <p class="font-semibold text-gray-800">{{ item.subtotal | number }} {{ item.currency }}</p>
                       </div>
 
                       <!-- Remove Button -->
@@ -136,7 +136,7 @@ import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog
                 </mat-card-content>
                 <mat-card-actions class="bg-gray-50 p-4 flex justify-between items-center">
                   <span class="text-gray-600">Sous-total boutique</span>
-                  <span class="font-bold text-lg">{{ shop.shopTotal | number }} MGA</span>
+                  <span class="font-bold text-lg">{{ shop.shopTotal | number }} {{ shop.items[0].currency }}</span>
                 </mat-card-actions>
               </mat-card>
             }
@@ -153,13 +153,13 @@ import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog
                   @for (shop of cart.shops; track shop.shopId) {
                     <div class="flex justify-between text-gray-600">
                       <span>{{ shop.shopName }}</span>
-                      <span>{{ shop.shopTotal | number }} MGA</span>
+                      <span>{{ shop.shopTotal | number }} {{ shop.items[0].currency }}</span>
                     </div>
                   }
                   <mat-divider></mat-divider>
                   <div class="flex justify-between text-lg font-bold">
                     <span>Total</span>
-                    <span class="text-primary">{{ cart.total | number }} MGA</span>
+                    <span class="text-primary">{{ cart.total | number }} {{ cartCurrency }}</span>
                   </div>
                 </div>
               </mat-card-content>
@@ -230,6 +230,10 @@ export class CartComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  get cartCurrency(): string {
+    return this.cart.shops[0]?.items[0]?.currency || 'MGA';
   }
 
   loadCart(): void {
@@ -332,7 +336,7 @@ export class CartComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: 'Confirmer la commande',
-        message: `Confirmer la commande de ${this.cart.total.toLocaleString()} MGA ?`,
+        message: `Confirmer la commande de ${this.cart.total.toLocaleString()} ${this.cartCurrency} ?`,
         confirmText: 'Confirmer',
         cancelText: 'Annuler'
       }
