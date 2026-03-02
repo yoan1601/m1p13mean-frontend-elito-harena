@@ -18,7 +18,7 @@ import { FormsModule } from '@angular/forms';
 import { TablerIconsModule } from 'angular-tabler-icons';
 
 import { Product, ProductFilterParams, ProductStatus } from 'src/app/core/models';
-import { ProductService } from 'src/app/core/services';
+import { ProductService, ShopService } from 'src/app/core/services';
 import { AuthService } from 'src/app/core/services';
 import { ProductFormDialogComponent } from './product-form-dialog.component';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
@@ -391,16 +391,45 @@ export class ProductListComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
+    private shopService: ShopService,
     private authService: AuthService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
-    // Get the shop ID from the current user
+    // Get the shop ID by finding the shop where current user is the owner
     const user = this.authService.currentUser();
-    this.shopId = user?.shopId || null;
-    this.loadProducts();
+    if (user?.id) {
+      this.shopService.getAll({ ownerId: user.id }).subscribe({
+        next: (response) => {
+          if (response.data && response.data.length > 0) {
+            this.shopId = response.data[0]._id;
+            this.loadProducts();
+          } else {
+            this.snackBar.open('Aucune boutique trouvée pour cet utilisateur', 'Fermer', {
+              duration: 3000,
+              panelClass: ['error-snackbar']
+            });
+            this.loading = false;
+          }
+        },
+        error: (error) => {
+          console.error('Error loading shop:', error);
+          this.snackBar.open('Erreur lors du chargement de la boutique', 'Fermer', {
+            duration: 3000,
+            panelClass: ['error-snackbar']
+          });
+          this.loading = false;
+        }
+      });
+    } else {
+      this.snackBar.open('Utilisateur non authentifié', 'Fermer', {
+        duration: 3000,
+        panelClass: ['error-snackbar']
+      });
+      this.loading = false;
+    }
   }
 
   loadProducts(): void {
