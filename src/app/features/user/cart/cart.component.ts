@@ -66,8 +66,10 @@ import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog
               <h3 class="text-xl font-medium text-gray-700">Votre panier est vide</h3>
               <p class="text-gray-500">Parcourez nos boutiques pour trouver des produits</p>
               <button mat-raised-button color="primary" routerLink="/user/products">
-                <i-tabler name="shopping-bag" class="icon-18 mr-2"></i-tabler>
-                Parcourir les Produits
+                <span class="flex items-center">
+                  <i-tabler name="shopping-bag" class="icon-18 mr-2"></i-tabler>
+                  Parcourir les Produits
+                </span>
               </button>
             </div>
           </mat-card-content>
@@ -169,20 +171,24 @@ import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog
                         class="w-full"
                         [disabled]="confirming || cart.shops.length === 0"
                         (click)="confirmOrder()">
-                  @if (confirming) {
-                    <mat-spinner diameter="20" class="inline-block mr-2"></mat-spinner>
-                  } @else {
-                    <i-tabler name="check" class="icon-18 mr-2"></i-tabler>
-                  }
-                  Confirmer la Commande
+                  <span class="flex items-center justify-center">
+                    @if (confirming) {
+                      <mat-spinner diameter="20" class="inline-block mr-2"></mat-spinner>
+                    } @else {
+                      <i-tabler name="check" class="icon-18 mr-2"></i-tabler>
+                    }
+                    Confirmer la Commande
+                  </span>
                 </button>
                 <button mat-stroked-button 
                         color="warn" 
                         class="w-full"
                         [disabled]="confirming"
                         (click)="clearCart()">
-                  <i-tabler name="trash" class="icon-18 mr-2"></i-tabler>
-                  Vider le Panier
+                  <span class="flex items-center justify-center">
+                    <i-tabler name="trash" class="icon-18 mr-2"></i-tabler>
+                    Vider le Panier
+                  </span>
                 </button>
               </mat-card-actions>
             </mat-card>

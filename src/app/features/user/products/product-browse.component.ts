@@ -57,21 +57,23 @@ import { Product, ProductFilterParams, PaginationMeta, Category } from 'src/app/
           <p class="text-gray-500 mt-1">Découvrez notre sélection de produits</p>
         </div>
         <button mat-raised-button color="primary" routerLink="/user/cart">
-          <i-tabler name="shopping-cart" class="icon-18 mr-2"></i-tabler>
-          Panier
-          @if (cartCount > 0) {
-            <span class="ml-2 bg-white text-primary px-2 py-0.5 rounded-full text-sm font-bold">
-              {{ cartCount }}
-            </span>
-          }
+          <span class="flex items-center">
+            <i-tabler name="shopping-cart" class="icon-18 mr-2"></i-tabler>
+            Panier
+            @if (cartCount > 0) {
+              <span class="ml-2 bg-white text-primary px-2 py-0.5 rounded-full text-sm font-bold">
+                {{ cartCount }}
+              </span>
+            }
+          </span>
         </button>
       </div>
 
       <!-- Filters -->
       <mat-card class="mat-elevation-z2 mb-6">
         <mat-card-content class="p-4">
-          <div class="flex flex-wrap gap-4 items-center">
-            <mat-form-field appearance="outline" class="search-field">
+          <div class="flex flex-nowrap gap-4 items-center">
+            <mat-form-field appearance="outline" class="search-field" subscriptSizing="dynamic">
               <mat-label>Rechercher</mat-label>
               <input matInput [(ngModel)]="searchQuery" 
                      placeholder="Nom du produit..."
@@ -79,7 +81,7 @@ import { Product, ProductFilterParams, PaginationMeta, Category } from 'src/app/
               <mat-icon matSuffix>search</mat-icon>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="category-field">
+            <mat-form-field appearance="outline" class="category-field" subscriptSizing="dynamic">
               <mat-label>Catégorie</mat-label>
               <mat-select [(ngModel)]="categoryFilter" (selectionChange)="loadProducts()">
                 <mat-option value="">Toutes</mat-option>
@@ -90,14 +92,18 @@ import { Product, ProductFilterParams, PaginationMeta, Category } from 'src/app/
             </mat-form-field>
 
             <button mat-stroked-button (click)="loadProducts()">
-              <i-tabler name="refresh" class="icon-18 mr-2"></i-tabler>
-              Rechercher
+              <span class="flex items-center">
+                <i-tabler name="refresh" class="icon-18 mr-2"></i-tabler>
+                Rechercher
+              </span>
             </button>
 
             @if (searchQuery || categoryFilter) {
               <button mat-button color="warn" (click)="clearFilters()">
-                <i-tabler name="x" class="icon-18 mr-1"></i-tabler>
-                Effacer
+                <span class="flex items-center">
+                  <i-tabler name="x" class="icon-18 mr-1"></i-tabler>
+                  Effacer
+                </span>
               </button>
             }
           </div>
@@ -195,17 +201,21 @@ import { Product, ProductFilterParams, PaginationMeta, Category } from 'src/app/
                             color="primary"
                             [disabled]="addingToCart === product._id"
                             (click)="addToCart(product)">
-                      @if (addingToCart === product._id) {
-                        <mat-spinner diameter="18" class="inline-block"></mat-spinner>
-                      } @else {
-                        <i-tabler name="shopping-cart-plus" class="icon-18 mr-1"></i-tabler>
-                        Ajouter
-                      }
+                      <span class="flex items-center">
+                        @if (addingToCart === product._id) {
+                          <mat-spinner diameter="18" class="inline-block"></mat-spinner>
+                        } @else {
+                          <i-tabler name="shopping-cart-plus" class="icon-18 mr-1"></i-tabler>
+                          Ajouter
+                        }
+                      </span>
                     </button>
                   } @else {
                     <button mat-raised-button disabled class="w-full">
-                      <i-tabler name="shopping-cart-off" class="icon-18 mr-1"></i-tabler>
-                      Indisponible
+                      <span class="flex items-center">
+                        <i-tabler name="shopping-cart-off" class="icon-18 mr-1"></i-tabler>
+                        Indisponible
+                      </span>
                     </button>
                   }
                 </div>
