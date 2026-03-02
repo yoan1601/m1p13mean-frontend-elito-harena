@@ -12,8 +12,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 
-import { Shop, ShopCreatePayload, ShopUpdatePayload, Category } from 'src/app/core/models';
-import { ShopService, CategoryService } from 'src/app/core/services';
+import { Shop, ShopCreatePayload, ShopUpdatePayload, Category, ShopUser } from 'src/app/core/models';
+import { ShopService, CategoryService, UserService } from 'src/app/core/services';
 
 export interface ShopFormDialogData {
   mode: 'create' | 'edit';
@@ -81,10 +81,19 @@ export interface ShopFormDialogData {
         </div>
 
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>ID Propriétaire</mat-label>
-          <input matInput formControlName="ownerId" placeholder="ID du propriétaire">
+          <mat-label>Propriétaire</mat-label>
+          <mat-select formControlName="ownerId" placeholder="Sélectionner un propriétaire">
+            @for (owner of availableOwners; track owner._id) {
+              <mat-option [value]="owner._id">
+                {{ owner.firstName || '' }} {{ owner.lastName || '' }} ({{ owner.email }})
+              </mat-option>
+            }
+          </mat-select>
           @if (form.get('ownerId')?.hasError('required')) {
             <mat-error>Le propriétaire est obligatoire</mat-error>
+          }
+          @if (loadingOwners) {
+            <mat-hint>Chargement des propriétaires...</mat-hint>
           }
         </mat-form-field>
 
@@ -204,6 +213,8 @@ export class ShopFormDialogComponent implements OnInit {
   form: FormGroup;
   saving = false;
   categories: Category[] = [];
+  availableOwners: ShopUser[] = [];
+  loadingOwners = false;
   selectedFile: File | null = null;
   imagePreview: string | null = null;
 
@@ -211,6 +222,7 @@ export class ShopFormDialogComponent implements OnInit {
     private fb: FormBuilder,
     private shopService: ShopService,
     private categoryService: CategoryService,
+    private userService: UserService,
     private snackBar: MatSnackBar,
     private dialogRef: MatDialogRef<ShopFormDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ShopFormDialogData
@@ -228,6 +240,7 @@ export class ShopFormDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCategories();
+    this.loadAvailableOwners();
     
     if (this.data.mode === 'edit' && this.data.shop) {
       this.form.patchValue({
@@ -244,6 +257,25 @@ export class ShopFormDialogComponent implements OnInit {
         this.imagePreview = this.data.shop.imagePath;
       }
     }
+  }
+
+  loadAvailableOwners(): void {
+    this.loadingOwners = true;
+    this.userService.getShopUsers().subscribe({
+      next: (users) => {
+        // Filter to only show users without a shop assigned
+        // In edit mode, also include the current owner
+        const currentOwnerId = this.data.mode === 'edit' ? this.data.shop?.ownerId : null;
+        this.availableOwners = users.filter(
+          user => user.totalShops === 0 || user._id === currentOwnerId
+        );
+        this.loadingOwners = false;
+      },
+      error: (error) => {
+        console.error('Error loading available owners:', error);
+        this.loadingOwners = false;
+      }
+    });
   }
 
   loadCategories(): void {
