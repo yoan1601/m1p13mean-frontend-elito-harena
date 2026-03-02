@@ -23,21 +23,22 @@ export const UserRoutes: Routes = [
       ],
     },
   },
-  // Shop browsing - GET /api/shops
-  {
-    path: 'shops',
-    loadComponent: () =>
-      import('./dashboard/user-dashboard.component').then(
-        (m) => m.UserDashboardComponent
-      ),
-    data: {
-      title: 'Browse Shops',
-      breadcrumb: [
-        { title: 'Home', url: '/user' },
-        { title: 'Shops' },
-      ],
-    },
-  },
+  // DISABLED: Mock route - loads UserDashboardComponent as placeholder
+  // Re-enable when dedicated ShopBrowseComponent is implemented
+  // {
+  //   path: 'shops',
+  //   loadComponent: () =>
+  //     import('./dashboard/user-dashboard.component').then(
+  //       (m) => m.UserDashboardComponent
+  //     ),
+  //   data: {
+  //     title: 'Browse Shops',
+  //     breadcrumb: [
+  //       { title: 'Home', url: '/user' },
+  //       { title: 'Shops' },
+  //     ],
+  //   },
+  // },
   // Product browsing - GET /api/products
   {
     path: 'products',
@@ -53,21 +54,22 @@ export const UserRoutes: Routes = [
       ],
     },
   },
-  // Categories - GET /api/categories
-  {
-    path: 'categories',
-    loadComponent: () =>
-      import('./dashboard/user-dashboard.component').then(
-        (m) => m.UserDashboardComponent
-      ),
-    data: {
-      title: 'Categories',
-      breadcrumb: [
-        { title: 'Home', url: '/user' },
-        { title: 'Categories' },
-      ],
-    },
-  },
+  // DISABLED: Mock route - loads UserDashboardComponent as placeholder
+  // Re-enable when dedicated CategoryBrowseComponent is implemented
+  // {
+  //   path: 'categories',
+  //   loadComponent: () =>
+  //     import('./dashboard/user-dashboard.component').then(
+  //       (m) => m.UserDashboardComponent
+  //     ),
+  //   data: {
+  //     title: 'Categories',
+  //     breadcrumb: [
+  //       { title: 'Home', url: '/user' },
+  //       { title: 'Categories' },
+  //     ],
+  //   },
+  // },
   // Cart - GET /api/carts
   {
     path: 'cart',
@@ -98,18 +100,20 @@ export const UserRoutes: Routes = [
       ],
     },
   },
-  {
-    path: 'profile',
-    loadComponent: () =>
-      import('./dashboard/user-dashboard.component').then(
-        (m) => m.UserDashboardComponent
-      ),
-    data: {
-      title: 'My Profile',
-      breadcrumb: [
-        { title: 'Home', url: '/user' },
-        { title: 'Profile' },
-      ],
-    },
-  },
+  // DISABLED: Mock route - loads UserDashboardComponent as placeholder
+  // Re-enable when dedicated ProfileComponent is implemented
+  // {
+  //   path: 'profile',
+  //   loadComponent: () =>
+  //     import('./dashboard/user-dashboard.component').then(
+  //       (m) => m.UserDashboardComponent
+  //     ),
+  //   data: {
+  //     title: 'My Profile',
+  //     breadcrumb: [
+  //       { title: 'Home', url: '/user' },
+  //       { title: 'Profile' },
+  //     ],
+  //   },
+  // },
 ];

@@ -46,32 +46,36 @@ export const AdminRoutes: Routes = [
       ],
     },
   },
-  {
-    path: 'users',
-    loadComponent: () =>
-      import('./dashboard/admin-dashboard.component').then(
-        (m) => m.AdminDashboardComponent
-      ),
-    data: {
-      title: 'Manage Users',
-      breadcrumb: [
-        { title: 'Admin', url: '/admin' },
-        { title: 'Users' },
-      ],
-    },
-  },
-  {
-    path: 'reports',
-    loadComponent: () =>
-      import('./dashboard/admin-dashboard.component').then(
-        (m) => m.AdminDashboardComponent
-      ),
-    data: {
-      title: 'Reports',
-      breadcrumb: [
-        { title: 'Admin', url: '/admin' },
-        { title: 'Reports' },
-      ],
-    },
-  },
+  // DISABLED: Mock route - loads AdminDashboardComponent as placeholder
+  // Re-enable when dedicated UserManagementComponent is implemented
+  // {
+  //   path: 'users',
+  //   loadComponent: () =>
+  //     import('./dashboard/admin-dashboard.component').then(
+  //       (m) => m.AdminDashboardComponent
+  //     ),
+  //   data: {
+  //     title: 'Manage Users',
+  //     breadcrumb: [
+  //       { title: 'Admin', url: '/admin' },
+  //       { title: 'Users' },
+  //     ],
+  //   },
+  // },
+  // DISABLED: Mock route - loads AdminDashboardComponent as placeholder
+  // Re-enable when dedicated ReportsComponent is implemented
+  // {
+  //   path: 'reports',
+  //   loadComponent: () =>
+  //     import('./dashboard/admin-dashboard.component').then(
+  //       (m) => m.AdminDashboardComponent
+  //     ),
+  //   data: {
+  //     title: 'Reports',
+  //     breadcrumb: [
+  //       { title: 'Admin', url: '/admin' },
+  //       { title: 'Reports' },
+  //     ],
+  //   },
+  // },
 ];
