@@ -49,32 +49,36 @@ export const ShopRoutes: Routes = [
       ],
     },
   },
-  {
-    path: 'inventory',
-    loadComponent: () =>
-      import('./dashboard/shop-dashboard.component').then(
-        (m) => m.ShopDashboardComponent
-      ),
-    data: {
-      title: 'Inventory',
-      breadcrumb: [
-        { title: 'Shop', url: '/shop' },
-        { title: 'Inventory' },
-      ],
-    },
-  },
-  {
-    path: 'promotions',
-    loadComponent: () =>
-      import('./dashboard/shop-dashboard.component').then(
-        (m) => m.ShopDashboardComponent
-      ),
-    data: {
-      title: 'Promotions',
-      breadcrumb: [
-        { title: 'Shop', url: '/shop' },
-        { title: 'Promotions' },
-      ],
-    },
-  },
+  // DISABLED: Mock route - loads ShopDashboardComponent as placeholder
+  // Re-enable when dedicated InventoryComponent is implemented
+  // {
+  //   path: 'inventory',
+  //   loadComponent: () =>
+  //     import('./dashboard/shop-dashboard.component').then(
+  //       (m) => m.ShopDashboardComponent
+  //     ),
+  //   data: {
+  //     title: 'Inventory',
+  //     breadcrumb: [
+  //       { title: 'Shop', url: '/shop' },
+  //       { title: 'Inventory' },
+  //     ],
+  //   },
+  // },
+  // DISABLED: Mock route - loads ShopDashboardComponent as placeholder
+  // Re-enable when dedicated PromotionsComponent is implemented
+  // {
+  //   path: 'promotions',
+  //   loadComponent: () =>
+  //     import('./dashboard/shop-dashboard.component').then(
+  //       (m) => m.ShopDashboardComponent
+  //     ),
+  //   data: {
+  //     title: 'Promotions',
+  //     breadcrumb: [
+  //       { title: 'Shop', url: '/shop' },
+  //       { title: 'Promotions' },
+  //     ],
+  //   },
+  // },
 ];
