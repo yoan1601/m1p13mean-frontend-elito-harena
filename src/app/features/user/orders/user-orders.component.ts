@@ -59,8 +59,8 @@ import { Order, OrderStatus, OrderFilterParams, PaginationMeta } from 'src/app/c
       <!-- Filters -->
       <mat-card class="mat-elevation-z2 mb-6">
         <mat-card-content class="p-4">
-          <div class="flex flex-wrap gap-4 items-center">
-            <mat-form-field appearance="outline" class="status-filter">
+          <div class="flex flex-nowrap gap-4 items-center">
+            <mat-form-field appearance="outline" class="status-filter" subscriptSizing="dynamic">
               <mat-label>Statut</mat-label>
               <mat-select [(ngModel)]="statusFilter" (selectionChange)="loadOrders()">
                 <mat-option value="">Tous</mat-option>
@@ -72,8 +72,10 @@ import { Order, OrderStatus, OrderFilterParams, PaginationMeta } from 'src/app/c
             </mat-form-field>
 
             <button mat-stroked-button (click)="loadOrders()">
-              <i-tabler name="refresh" class="icon-18 mr-2"></i-tabler>
-              Actualiser
+              <span class="flex items-center">
+                <i-tabler name="refresh" class="icon-18 mr-2"></i-tabler>
+                Actualiser
+              </span>
             </button>
           </div>
         </mat-card-content>
@@ -94,8 +96,10 @@ import { Order, OrderStatus, OrderFilterParams, PaginationMeta } from 'src/app/c
               <h3 class="text-xl font-medium text-gray-700">Aucune commande</h3>
               <p class="text-gray-500">Vous n'avez pas encore passé de commande</p>
               <button mat-raised-button color="primary" routerLink="/user/products">
-                <i-tabler name="shopping-bag" class="icon-18 mr-2"></i-tabler>
-                Commencer vos Achats
+                <span class="flex items-center">
+                  <i-tabler name="shopping-bag" class="icon-18 mr-2"></i-tabler>
+                  Commencer vos Achats
+                </span>
               </button>
             </div>
           </mat-card-content>

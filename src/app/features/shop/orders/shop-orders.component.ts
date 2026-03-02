@@ -88,8 +88,8 @@ import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog
       <!-- Filters -->
       <mat-card class="mat-elevation-z2 mb-6">
         <mat-card-content class="p-4">
-          <div class="flex flex-wrap gap-4 items-center">
-            <mat-form-field appearance="outline" class="status-filter">
+          <div class="flex flex-nowrap gap-4 items-center">
+            <mat-form-field appearance="outline" class="status-filter" subscriptSizing="dynamic">
               <mat-label>Filtrer par statut</mat-label>
               <mat-select [(ngModel)]="statusFilter" (selectionChange)="loadOrders()">
                 <mat-option value="">Toutes les commandes</mat-option>
@@ -101,14 +101,18 @@ import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog
             </mat-form-field>
 
             <button mat-stroked-button (click)="loadOrders()">
-              <i-tabler name="refresh" class="icon-18 mr-2"></i-tabler>
-              Actualiser
+              <span class="flex items-center">
+                <i-tabler name="refresh" class="icon-18 mr-2"></i-tabler>
+                Actualiser
+              </span>
             </button>
 
             @if (statusFilter) {
               <button mat-button color="warn" (click)="clearFilter()">
-                <i-tabler name="x" class="icon-18 mr-1"></i-tabler>
-                Effacer le filtre
+                <span class="flex items-center">
+                  <i-tabler name="x" class="icon-18 mr-1"></i-tabler>
+                  Effacer le filtre
+                </span>
               </button>
             }
           </div>
@@ -313,6 +317,8 @@ import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog
     
     .status-filter {
       min-width: 200px;
+      max-width: 250px;
+      flex: 0 0 auto;
     }
     
     .status-confirmed { 
