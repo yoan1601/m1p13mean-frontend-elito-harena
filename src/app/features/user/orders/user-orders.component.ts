@@ -107,14 +107,14 @@ import { Order, OrderStatus, OrderFilterParams, PaginationMeta } from 'src/app/c
       } @else {
         <!-- Orders List -->
         <div class="space-y-4">
-          @for (order of orders; track order._id) {
+          @for (order of orders; track order.id) {
             <mat-card class="mat-elevation-z2">
               <mat-expansion-panel>
                 <mat-expansion-panel-header>
                   <mat-panel-title class="flex items-center gap-4">
                     <div class="flex items-center gap-2">
                       <i-tabler name="package" class="icon-20"></i-tabler>
-                      <span class="font-medium">{{ order._id | slice:-8 | uppercase }}</span>
+                      <span class="font-medium">{{ order.id | slice:-8 | uppercase }}</span>
                     </div>
                     <mat-chip [ngClass]="getStatusClass(order.status)">
                       {{ getStatusLabel(order.status) }}
