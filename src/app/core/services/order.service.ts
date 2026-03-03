@@ -21,6 +21,7 @@ import {
 })
 export class OrderService {
   private readonly baseUrl = `${environment.apiBaseUrl}${environment.api.orders}`;
+  private readonly shopsUrl = `${environment.apiBaseUrl}${environment.api.shops}`;
 
   constructor(private http: HttpClient) {}
 
@@ -56,10 +57,10 @@ export class OrderService {
 
   /**
    * Get shop orders (for SHOP role)
-   * GET /api/orders (backend filters by shopId from token)
+   * GET /api/v2/shops/orders (backend filters by shopId from token)
    */
   getShopOrders(filters?: OrderFilterParams): Observable<OrderListResponse> {
-    return this.http.get<OrderListResponse>(this.baseUrl, {
+    return this.http.get<OrderListResponse>(`${this.shopsUrl}/orders`, {
       params: this.buildParams(filters)
     }).pipe(
       catchError(error => {
@@ -85,12 +86,12 @@ export class OrderService {
 
   /**
    * Update order status (for SHOP role)
-   * PATCH /api/orders/:id/status
+   * PATCH /api/v2/shops/orders/:id/status
    * Valid transitions: CONFIRMED → PREPARING → READY → DELIVERED
    */
   updateStatus(orderId: string, status: OrderStatus): Observable<OrderResponse> {
     const payload: OrderStatusUpdatePayload = { status };
-    return this.http.patch<OrderResponse>(`${this.baseUrl}/${orderId}/status`, payload).pipe(
+    return this.http.patch<OrderResponse>(`${this.shopsUrl}/orders/${orderId}/status`, payload).pipe(
       catchError(error => {
         console.error('Error updating order status:', error);
         return throwError(() => error);
