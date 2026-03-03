@@ -5,104 +5,117 @@
     <p class="text-gray-500 mt-1">Bienvenue ! Voici ce qui se passe dans votre centre commercial.</p>
   </div>
 
-  <!-- Stats Cards -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-    @for (card of statCards; track card.title) {
-      <mat-card class="mat-elevation-z2">
-        <mat-card-content class="p-4">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-gray-500 text-sm">{{ card.title }}</p>
-              <h3 class="text-2xl font-bold mt-1">{{ card.value }}</h3>
-              <p class="text-sm mt-2" 
-                 [class.text-green-600]="card.changeType === 'increase'"
-                 [class.text-red-600]="card.changeType === 'decrease'">
-                {{ card.change }} par rapport au mois dernier
-              </p>
+  <!-- Loading State -->
+  @if (loading) {
+    <div class="flex justify-center items-center h-64">
+      <mat-spinner diameter="48"></mat-spinner>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error && !loading) {
+    <mat-card class="mat-elevation-z2 mb-6">
+      <mat-card-content class="p-6 text-center">
+        <i-tabler name="alert-circle" class="icon-48 text-red-500 mb-4"></i-tabler>
+        <p class="text-gray-600 mb-4">{{ error }}</p>
+        <button mat-raised-button color="primary" (click)="retry()">
+          <i-tabler name="refresh" class="mr-2 inline-block align-middle"></i-tabler>
+          <span class="inline-block align-middle">Réessayer</span>
+        </button>
+      </mat-card-content>
+    </mat-card>
+  }
+
+  <!-- Dashboard Content -->
+  @if (!loading && !error) {
+    <!-- Stats Cards - 4 columns grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+      @for (card of statCards; track card.title) {
+        <mat-card class="mat-elevation-z2">
+          <mat-card-content class="p-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-gray-500 text-sm">{{ card.title }}</p>
+                <h3 class="text-2xl font-bold mt-1">{{ card.value }}</h3>
+              </div>
+              <div class="p-3 rounded-full bg-gray-100">
+                <i-tabler [name]="card.icon" class="icon-24"></i-tabler>
+              </div>
             </div>
-            <div class="p-3 rounded-full bg-gray-100">
-              <i-tabler [name]="card.icon" class="icon-24"></i-tabler>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- Quick Actions -->
+      <mat-card class="mat-elevation-z2">
+        <mat-card-header>
+          <mat-card-title>Actions Rapides</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="p-4">
+          <div class="grid grid-cols-2 gap-4">
+            <a mat-stroked-button color="primary" class="h-16 items-center" routerLink="/admin/shops">
+              <i-tabler name="building-store" class="mr-2 inline-block align-middle"></i-tabler>
+              <span class="inline-block align-middle">Gérer les Boutiques</span>
+            </a>
+            <a mat-stroked-button color="primary" class="h-16 items-center" routerLink="/admin/categories">
+              <i-tabler name="category" class="mr-2 inline-block align-middle"></i-tabler>
+              <span class="inline-block align-middle">Gérer les Catégories</span>
+            </a>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- System Status -->
+      <mat-card class="mat-elevation-z2">
+        <mat-card-header>
+          <mat-card-title>État du Système</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="p-4">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+              <div class="flex items-center gap-2">
+                <i-tabler name="circle-check" class="text-green-600"></i-tabler>
+                <span class="text-green-800">API Backend</span>
+              </div>
+              <span class="text-green-600 text-sm">Opérationnel</span>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+              <div class="flex items-center gap-2">
+                <i-tabler name="circle-check" class="text-green-600"></i-tabler>
+                <span class="text-green-800">Base de données</span>
+              </div>
+              <span class="text-green-600 text-sm">Opérationnel</span>
             </div>
           </div>
         </mat-card-content>
       </mat-card>
-    }
-  </div>
+    </div>
 
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-    <!-- Quick Actions -->
-    <mat-card class="mat-elevation-z2">
-      <mat-card-header>
-        <mat-card-title>Actions Rapides</mat-card-title>
-      </mat-card-header>
-      <mat-card-content class="p-4">
-        <div class="grid grid-cols-2 gap-4">
-          <button mat-stroked-button color="primary" class="h-16 items-center">
-            <i-tabler name="building-store" class="mr-2 inline-block align-middle"></i-tabler>
-            <span class="inline-block align-middle">Gérer les Boutiques</span>
-          </button>
-          <button mat-stroked-button color="primary" class="h-16 items-center">
-            <i-tabler name="users" class="mr-2 inline-block align-middle"></i-tabler>
-            <span class="inline-block align-middle">Gérer les Utilisateurs</span>
-          </button>
-          <button mat-stroked-button color="primary" class="h-16 items-center">
-            <i-tabler name="chart-bar" class="mr-2 inline-block align-middle"></i-tabler>
-            <span class="inline-block align-middle">Voir les Rapports</span>
-          </button>
-          <button mat-stroked-button color="primary" class="h-16 items-center">
-            <i-tabler name="settings" class="mr-2 inline-block align-middle"></i-tabler>
-            <span class="inline-block align-middle">Paramètres Système</span>
-          </button>
-        </div>
-      </mat-card-content>
-    </mat-card>
+    <!-- Placeholder for Charts -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+      <mat-card class="mat-elevation-z2">
+        <mat-card-header>
+          <mat-card-title>Aperçu des Revenus</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="p-4">
+          <div class="h-64 flex items-center justify-center bg-gray-50 rounded">
+            <p class="text-gray-400">Graphique de revenus à intégrer</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
 
-    <!-- Recent Activity -->
-    <mat-card class="mat-elevation-z2">
-      <mat-card-header>
-        <mat-card-title>Activité Récente</mat-card-title>
-      </mat-card-header>
-      <mat-card-content class="p-4">
-        <mat-list>
-          @for (activity of recentActivities; track activity.id) {
-            <mat-list-item>
-              <i-tabler matListItemIcon [name]="activity.icon"></i-tabler>
-              <div matListItemTitle>{{ activity.action }}</div>
-              <div matListItemLine class="text-gray-500">
-                {{ activity.target }} • {{ activity.timestamp | date:'short' }}
-              </div>
-            </mat-list-item>
-            @if (!$last) {
-              <mat-divider></mat-divider>
-            }
-          }
-        </mat-list>
-      </mat-card-content>
-    </mat-card>
-  </div>
-
-  <!-- Placeholder for Charts -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-    <mat-card class="mat-elevation-z2">
-      <mat-card-header>
-        <mat-card-title>Aperçu des Revenus</mat-card-title>
-      </mat-card-header>
-      <mat-card-content class="p-4">
-        <div class="h-64 flex items-center justify-center bg-gray-50 rounded">
-          <p class="text-gray-400">Espace réservé pour graphique - intégrer une bibliothèque de graphiques</p>
-        </div>
-      </mat-card-content>
-    </mat-card>
-
-    <mat-card class="mat-elevation-z2">
-      <mat-card-header>
-        <mat-card-title>Performance des Boutiques</mat-card-title>
-      </mat-card-header>
-      <mat-card-content class="p-4">
-        <div class="h-64 flex items-center justify-center bg-gray-50 rounded">
-          <p class="text-gray-400">Espace réservé pour graphique - intégrer une bibliothèque de graphiques</p>
-        </div>
-      </mat-card-content>
-    </mat-card>
-  </div>
+      <mat-card class="mat-elevation-z2">
+        <mat-card-header>
+          <mat-card-title>Performance des Boutiques</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="p-4">
+          <div class="h-64 flex items-center justify-center bg-gray-50 rounded">
+            <p class="text-gray-400">Graphique de performance à intégrer</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  }
 </div>
