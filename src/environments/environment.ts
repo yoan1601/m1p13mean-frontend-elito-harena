@@ -42,6 +42,12 @@ export const environment = {
     // Users endpoints
     // GET /api/users/shops - Access: ADMIN
     users: '/users',
+
+    // Dashboard endpoints
+    // GET /dashboard/customer - Access: USER
+    // GET /dashboard/merchant - Access: SHOP
+    // GET /dashboard/admin - Access: ADMIN
+    dashboard: '/dashboard',
   },
 
   // JWT configuration

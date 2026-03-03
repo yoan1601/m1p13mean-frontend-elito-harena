@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { RouterLink, ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 import { MatCardModule } from '@angular/material/card';
@@ -334,11 +334,21 @@ export class ProductBrowseComponent implements OnInit, OnDestroy {
     private productService: ProductService,
     private cartService: CartService,
     private categoryService: CategoryService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.loadProducts();
+    // Read category filter from query params
+    this.route.queryParams
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(params => {
+        if (params['category']) {
+          this.categoryFilter = params['category'];
+        }
+        this.loadProducts();
+      });
+    
     this.loadCategories();
     this.subscribeToCartCount();
     

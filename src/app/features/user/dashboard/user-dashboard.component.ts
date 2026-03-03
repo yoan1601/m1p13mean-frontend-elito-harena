@@ -1,127 +1,130 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { MaterialModule } from '../../../shared/material.module';
 import { TablerIconsModule } from 'angular-tabler-icons';
-
-interface FeaturedShop {
-  id: string;
-  name: string;
-  category: string;
-  image: string;
-  rating: number;
-}
-
-interface OrderHistory {
-  id: string;
-  shop: string;
-  items: number;
-  total: string;
-  status: 'delivered' | 'shipped' | 'processing' | 'pending';
-  date: Date;
-}
+import { DashboardService, AuthService, CategoryService } from '../../../core/services';
+import { UserDashboardStats, QuickStat, Category } from '../../../core/models';
 
 /**
  * User Dashboard Component
  * Displays personalized shopping experience for buyers (USER role).
- * Aligned with API Contract v1.4
+ * Fetches data from GET /dashboard/customer endpoint.
  */
 @Component({
   selector: 'app-user-dashboard',
   standalone: true,
-  imports: [CommonModule, MaterialModule, TablerIconsModule],
+  imports: [CommonModule, RouterLink, MaterialModule, TablerIconsModule],
   templateUrl: './user-dashboard.component.html',
 })
-export class UserDashboardComponent {
-  userName = 'User'; // Will be populated from auth service
+export class UserDashboardComponent implements OnInit {
+  // State management
+  loading = true;
+  error: string | null = null;
+  categoriesLoading = true;
+  
+  // User info
+  userName = 'User';
 
-  quickStats = [
-    {
-      label: 'Commandes Actives',
-      value: '3',
-      icon: 'shopping-bag',
-    },
-    {
-      label: 'Boutiques Favorites',
-      value: '5',
-      icon: 'building-store',
-    },
-    {
-      label: 'Produits Consultés',
-      value: '24',
-      icon: 'eye',
-    },
-  ];
+  // Dashboard data
+  quickStats: QuickStat[] = [];
+  categories: Category[] = [];
 
-  featuredShops: FeaturedShop[] = [
-    {
-      id: '1',
-      name: 'Fashion Hub',
-      category: 'Vêtements & Accessoires',
-      image: '/assets/images/products/product-1.jpg',
-      rating: 4.8,
-    },
-    {
-      id: '2',
-      name: 'Tech World',
-      category: 'Électronique',
-      image: '/assets/images/products/product-2.jpg',
-      rating: 4.6,
-    },
-    {
-      id: '3',
-      name: 'Home Essentials',
-      category: 'Maison & Déco',
-      image: '/assets/images/products/product-3.jpg',
-      rating: 4.5,
-    },
-    {
-      id: '4',
-      name: 'Beauty Palace',
-      category: 'Beauté & Soins',
-      image: '/assets/images/products/product-4.jpg',
-      rating: 4.7,
-    },
-  ];
+  constructor(
+    private dashboardService: DashboardService,
+    private authService: AuthService,
+    private categoryService: CategoryService
+  ) {}
 
-  recentOrders: OrderHistory[] = [
-    {
-      id: 'ORD-1234',
-      shop: 'Fashion Hub',
-      items: 2,
-      total: '$89.99',
-      status: 'shipped',
-      date: new Date(Date.now() - 1000 * 60 * 60 * 24),
-    },
-    {
-      id: 'ORD-1233',
-      shop: 'Tech World',
-      items: 1,
-      total: '$299.00',
-      status: 'delivered',
-      date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3),
-    },
-    {
-      id: 'ORD-1232',
-      shop: 'Home Essentials',
-      items: 4,
-      total: '$156.50',
-      status: 'delivered',
-      date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7),
-    },
-  ];
-
-  getStatusColor(status: string): string {
-    const colors: Record<string, string> = {
-      pending: 'warn',
-      processing: 'accent',
-      shipped: 'primary',
-      delivered: 'primary',
-    };
-    return colors[status] || 'primary';
+  ngOnInit(): void {
+    this.loadUserInfo();
+    this.loadDashboard();
+    this.loadCategories();
   }
 
-  getStarArray(rating: number): number[] {
-    return Array(Math.floor(rating)).fill(0);
+  /**
+   * Load current user info from auth service
+   */
+  private loadUserInfo(): void {
+    const user = this.authService.currentUser();
+    if (user?.profile?.name) {
+      this.userName = user.profile.name;
+    }
+  }
+
+  /**
+   * Fetch dashboard data from API
+   */
+  private loadDashboard(): void {
+    this.loading = true;
+    this.error = null;
+
+    this.dashboardService.getUserDashboard().subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.mapDashboardData(response.data);
+        }
+        this.loading = false;
+      },
+      error: (err) => {
+        this.error = err.message || 'Erreur lors du chargement du tableau de bord';
+        this.loading = false;
+      },
+    });
+  }
+
+  /**
+   * Map API response to display format
+   */
+  private mapDashboardData(data: UserDashboardStats): void {
+    this.quickStats = [
+      {
+        label: 'Commandes Actives',
+        value: data.activeOrders.toString(),
+        icon: 'shopping-bag',
+      },
+      {
+        label: 'Boutiques Favorites',
+        value: data.favoriteShops.toString(),
+        icon: 'building-store',
+      },
+      {
+        label: 'Produits Consultés',
+        value: data.viewedProducts.toString(),
+        icon: 'eye',
+      },
+    ];
+  }
+
+  /**
+   * Fetch categories from API
+   */
+  private loadCategories(): void {
+    this.categoriesLoading = true;
+    this.categoryService.getAll().subscribe({
+      next: (categories) => {
+        this.categories = categories.filter(c => c.isActive && !c.deletedAt);
+        this.categoriesLoading = false;
+      },
+      error: () => {
+        this.categoriesLoading = false;
+      },
+    });
+  }
+
+  /**
+   * Get icon for category, fallback to default
+   */
+  getCategoryIcon(category: Category): string {
+    return category.icon || 'box';
+  }
+
+  /**
+   * Retry loading dashboard on error
+   */
+  retry(): void {
+    this.loadDashboard();
+    this.loadCategories();
   }
 }
 
