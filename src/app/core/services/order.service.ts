@@ -21,6 +21,7 @@ import {
 })
 export class OrderService {
   private readonly baseUrl = `${environment.apiBaseUrl}${environment.api.orders}`;
+  private readonly shopsUrl = `${environment.apiBaseUrl}${environment.api.shops}`;
 
   constructor(private http: HttpClient) {}
 
@@ -56,10 +57,10 @@ export class OrderService {
 
   /**
    * Get shop orders (for SHOP role)
-   * GET /api/orders (backend filters by shopId from token)
+   * GET /api/v2/shops/orders (backend filters by shopId from token)
    */
   getShopOrders(filters?: OrderFilterParams): Observable<OrderListResponse> {
-    return this.http.get<OrderListResponse>(this.baseUrl, {
+    return this.http.get<OrderListResponse>(`${this.shopsUrl}/orders`, {
       params: this.buildParams(filters)
     }).pipe(
       catchError(error => {
