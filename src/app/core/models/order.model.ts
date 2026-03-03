@@ -60,7 +60,7 @@ export interface OrderItem {
  * Order entity - aligned with backend order.model.js
  */
 export interface Order {
-  _id: string;
+  id: string;
   userId: string;
   shopId: string;
   shop?: Partial<Shop>;

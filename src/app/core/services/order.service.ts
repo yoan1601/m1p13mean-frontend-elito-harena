@@ -86,12 +86,12 @@ export class OrderService {
 
   /**
    * Update order status (for SHOP role)
-   * PATCH /api/orders/:id/status
+   * PATCH /api/v2/shops/orders/:id/status
    * Valid transitions: CONFIRMED → PREPARING → READY → DELIVERED
    */
   updateStatus(orderId: string, status: OrderStatus): Observable<OrderResponse> {
     const payload: OrderStatusUpdatePayload = { status };
-    return this.http.patch<OrderResponse>(`${this.baseUrl}/${orderId}/status`, payload).pipe(
+    return this.http.patch<OrderResponse>(`${this.shopsUrl}/orders/${orderId}/status`, payload).pipe(
       catchError(error => {
         console.error('Error updating order status:', error);
         return throwError(() => error);

@@ -152,7 +152,7 @@ import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog
                 <ng-container matColumnDef="orderId">
                   <th mat-header-cell *matHeaderCellDef>N° Commande</th>
                   <td mat-cell *matCellDef="let order">
-                    <span class="font-mono text-sm">{{ (order._id + '').slice(-8).toUpperCase() }}</span>
+                    <span class="font-mono text-sm">{{ (order.id + '').slice(-8).toUpperCase() }}</span>
                   </td>
                 </ng-container>
 
@@ -198,10 +198,10 @@ import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog
                       @if (canUpdateStatus(order.status)) {
                         <button mat-raised-button 
                                 color="primary" 
-                                [disabled]="updatingOrder === order._id"
+                                [disabled]="updatingOrder === order.id"
                                 (click)="advanceStatus(order)"
                                 [matTooltip]="'Passer à: ' + getStatusLabel(getNextStatus(order.status)!)">
-                          @if (updatingOrder === order._id) {
+                          @if (updatingOrder === order.id) {
                             <mat-spinner diameter="18" class="inline-block"></mat-spinner>
                           } @else {
                             <i-tabler name="arrow-right" class="icon-18 mr-1"></i-tabler>
@@ -250,7 +250,7 @@ import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog
             <mat-card-header class="bg-gray-50 p-4">
               <mat-card-title class="flex items-center gap-2">
                 <i-tabler name="file-description" class="icon-20"></i-tabler>
-                Détails de la commande #{{ selectedOrder._id | slice:-8 | uppercase }}
+                Détails de la commande #{{ selectedOrder.id | slice:-8 | uppercase }}
               </mat-card-title>
               <span class="flex-1"></span>
               <button mat-icon-button (click)="selectedOrder = null">
@@ -465,7 +465,7 @@ export class ShopOrdersComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: 'Changer le statut',
-        message: `Passer la commande #${order._id.slice(-8).toUpperCase()} à "${this.getStatusLabel(nextStatus)}" ?`,
+        message: `Passer la commande #${order.id.slice(-8).toUpperCase()} à "${this.getStatusLabel(nextStatus)}" ?`,
         confirmText: 'Confirmer',
         cancelText: 'Annuler'
       }
@@ -473,8 +473,8 @@ export class ShopOrdersComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.updatingOrder = order._id;
-        this.orderService.updateStatus(order._id, nextStatus)
+        this.updatingOrder = order.id;
+        this.orderService.updateStatus(order.id, nextStatus)
           .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (response) => {
@@ -483,7 +483,7 @@ export class ShopOrdersComponent implements OnInit, OnDestroy {
               this.loadOrders();
               this.loadOrderStats();
               
-              if (this.selectedOrder?._id === order._id) {
+              if (this.selectedOrder?.id === order.id) {
                 this.selectedOrder = response.data;
               }
             },
